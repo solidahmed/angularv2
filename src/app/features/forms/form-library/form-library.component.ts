@@ -217,6 +217,9 @@ export class FormLibraryComponent implements OnInit {
   useTemplate(template: FormTemplate): void {
     this.onUseTemplate.emit(template);
     this.snackBar.open(`Template "${template.name}" applied successfully`, 'Close', {
+    }
+    )
+  }
   getCategoryCount(category: string): number {
     return this.templates.filter(t => {
       const templateCategories = Array.isArray(t.category) ? t.category : [t.category];
