@@ -15,8 +15,6 @@ import { FormSubmission, Form, ReviewActivity } from '../../../../models/form.mo
 -      id: Date.now().toString(),
 -      action: action as any,
       id: Date.now().toString(),
-      action: action as ReviewActivity['action'],
-+      id: Date.now().toString(),
 +      action: action as ReviewActivity['action'],
        comments,
        reviewedBy: 'Current User',

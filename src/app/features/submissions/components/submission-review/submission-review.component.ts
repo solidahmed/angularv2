@@ -14,7 +14,6 @@ import { FormSubmission, Form, ReviewActivity } from '../../../../models/form.mo
      if (this.onUpdateSubmission) {
 -      this.onUpdateSubmission.emit({ submissionId, updates });
       this.onUpdateSubmission.emit({ submissionId, updates });
-+      this.onUpdateSubmission.emit({ submissionId, updates });
        
        // Update local state for immediate UI feedback
        this.submissions = this.submissions.map(sub =>

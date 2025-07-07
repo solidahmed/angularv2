@@ -22,6 +22,7 @@ export class FormPreviewComponent {
   get totalPossiblePoints(): number {
     return this.formFields
       .filter(field => field.scoring?.enabled)
+      .filter(field => field.scoring?.enabled)
       .reduce((sum, field) => {
         const points = (field.scoring?.maxPoints || 10) * (field.scoring?.weightMultiplier || 1);
         return sum + points;

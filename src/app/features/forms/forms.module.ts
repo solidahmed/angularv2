@@ -46,6 +46,8 @@ import { EmailTemplateCustomizationComponent } from './email-template-customizat
 import { RecipientManagementComponent } from './recipient-management/recipient-management.component';
 import { FormInvitationStatisticsComponent } from './form-invitation-statistics/form-invitation-statistics.component';
 import { WeightageAndScoringSettingsComponent } from './weightage-and-scoring-settings/weightage-and-scoring-settings.component';
+import { WeightageEditorComponent } from './weightage-editor/weightage-editor.component';
+import { MultiSelectFilterComponent } from './multi-select-filter/multi-select-filter.component';
 import { FormsRoutingModule } from './forms-routing.module';
 
 @NgModule({

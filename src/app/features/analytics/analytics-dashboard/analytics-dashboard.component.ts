@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormSubmission } from '../../../models/form.model';
 import { SubmissionService } from '../../../services/submission.service';
 
@@ -8,12 +7,12 @@ import { SubmissionService } from '../../../services/submission.service';
   templateUrl: './analytics-dashboard.component.html',
   styleUrls: ['./analytics-dashboard.component.scss']
 })
-export class AnalyticsDashboardComponent {
+export class AnalyticsDashboardComponent implements OnInit {
   @Input() submissions: FormSubmission[] = [];
   @Output() onFilterSubmissions = new EventEmitter<any>();
   
   selectedTimeRange: '7d' | '30d' | '90d' | '1y' = '30d';
-
+  
   // Chart data
   submissionChartData: any;
   riskChartData: any;

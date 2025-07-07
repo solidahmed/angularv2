@@ -23,14 +23,6 @@ export class SubmissionDetailsComponent implements OnChanges {
       link.click();
       document.body.removeChild(link);
     }
-    if (attachment && attachment.url) {
-      const link = document.createElement('a');
-      link.href = attachment.url;
-      link.download = attachment.name;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
   }
   
   formatFileSize(bytes: number): string {

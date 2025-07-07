@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormTemplate } from '../../../models/form.model';
 import { FormService } from '../../../services/form.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
