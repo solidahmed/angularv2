@@ -20,34 +20,6 @@ export class FormLibraryComponent implements OnInit {
   selectedSectors: string[] = [];
   searchTerm: string = '';
   
-  constructor(
-    private formService: FormService,
-    private snackBar: MatSnackBar
-  ) {}
-  
-  ngOnInit(): void {
-    this.loadTemplates();
-  }
-  
-  loadTemplates(): void {
-    this.formService.getTemplates().subscribe(
-      templates => {
-        this.templates = templates;
-        this.filteredTemplates = [...templates];
-      },
-      error => {
-        console.error('Error loading templates:', error);
-      }
-    );
-  }
-  templates: FormTemplate[] = [];
-  filteredTemplates: FormTemplate[] = [];
-  
-  // Filters
-  selectedCategories: string[] = [];
-  selectedSectors: string[] = [];
-  searchTerm: string = '';
-  
   // Categories and sectors for filtering
   categories = [
     "all", "survey", "assessment", "registration", "feedback", "compliance", 
@@ -64,7 +36,7 @@ export class FormLibraryComponent implements OnInit {
   
   constructor(
     private formService: FormService,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -217,9 +189,10 @@ export class FormLibraryComponent implements OnInit {
   useTemplate(template: FormTemplate): void {
     this.onUseTemplate.emit(template);
     this.snackBar.open(`Template "${template.name}" applied successfully`, 'Close', {
-    }
-    )
+      duration: 3000
+    });
   }
+  
   getCategoryCount(category: string): number {
     return this.templates.filter(t => {
       const templateCategories = Array.isArray(t.category) ? t.category : [t.category];
@@ -231,6 +204,6 @@ export class FormLibraryComponent implements OnInit {
     return this.templates.filter(t => {
       const templateSectors = Array.isArray(t.sector) ? t.sector : [t.sector as string];
       return templateSectors.includes(sector) || templateSectors.includes('all');
-    });
+    }).length;
   }
 }

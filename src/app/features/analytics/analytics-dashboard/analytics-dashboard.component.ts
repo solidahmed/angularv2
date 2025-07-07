@@ -186,4 +186,12 @@ export class AnalyticsDashboardComponent {
       ]
     };
   }
+
+  filterByStatus(status: string): void {
+    this.onFilterSubmissions.emit({ status });
+  }
+
+  filterByApprovalType(approvalType: string): void {
+    this.onFilterSubmissions.emit({ approvalType });
+  }
 }
