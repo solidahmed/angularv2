@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Input, Output, EventEmitter } from '@angular/core';
 import { FormSubmission } from '../../../models/form.model';
+import { SubmissionService } from '../../../services/submission.service';
 
 @Component({
   selector: 'app-analytics-dashboard',

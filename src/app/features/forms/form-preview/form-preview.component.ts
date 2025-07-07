@@ -19,18 +19,6 @@ export class FormPreviewComponent {
       new Date() > new Date(this.formSettings.expiration.expirationDate));
   }
   
-  @Input() formTitle: string = '';
-  @Input() formDescription: string = '';
-  @Input() formFields: FormField[] = [];
-  @Input() formSettings?: Form['settings'];
-  @Input() attachments: DocumentAttachment[] = [];
-      .filter(field => field.scoring?.enabled)
-  get isExpired(): boolean {
-    return !!(this.formSettings?.expiration?.enabled && 
-      this.formSettings.expiration.expirationDate && 
-      new Date() > new Date(this.formSettings.expiration.expirationDate));
-  }
-  
   get totalPossiblePoints(): number {
     return this.formFields
       .filter(field => field.scoring?.enabled)

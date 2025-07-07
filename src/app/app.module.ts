@@ -31,7 +31,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -102,7 +101,6 @@ import { AnalyticsModule } from './features/analytics/analytics.module';
     MatDatepickerModule,
     MatNativeDateModule,
     DragDropModule,
-    MatMenuModule,
     
     // NgRx
     StoreModule.forRoot({}),
