@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormSubmission } from '@app/models/form.model';
-import { ReportConfig } from '@app/services/report-generator.service';
+import { FormSubmission } from '../../../../models/form.model';
+import { ReportConfig } from '../../../../services/report-generator.service';
 
 @Component({
   selector: 'app-report-customization',

@@ -1,17 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormField } from '@app/models/form.model';
+import { FormField } from '../../../models/form.model';
 
 @Component({
-  updateScoring(updates: Partial<any>): void {
-    if (this.readOnly || !this.selectedField) return;
-    this.updateField({
-      scoring: {
-        ...this.selectedField.scoring,
-        ...updates
-      }
-    });
-  },
   templateUrl: './field-editor.component.html',
   styleUrls: ['./field-editor.component.scss']
 })
@@ -26,7 +17,7 @@ export class FieldEditorComponent {
   
   @Input() readOnly = false;
   
-  @Output() updateField = new EventEmitter<{id: string, updates: Partial<FormField>}>();
+  @Output() onUpdateField = new EventEmitter<{fieldId: string, updates: Partial<FormField>}>();
   
   private _selectedField: FormField | null = null;
   fieldForm: FormGroup;
@@ -170,8 +161,18 @@ export class FieldEditorComponent {
     });
   }
   
+  updateScoring(updates: Partial<any>): void {
+    if (this.readOnly || !this.selectedField) return;
+    this.updateField({
+      scoring: {
+        ...this.selectedField.scoring,
+        ...updates
+      }
+    });
+  }
+  
   updateField(updates: Partial<FormField>): void {
     if (this.readOnly || !this.selectedField) return;
-    this.onUpdateField.emit({ id: this.selectedField.id, updates });
+    this.onUpdateField.emit({ fieldId: this.selectedField.id, updates });
   }
 }

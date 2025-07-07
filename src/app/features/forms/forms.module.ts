@@ -47,8 +47,7 @@ import { RecipientManagementComponent } from './recipient-management/recipient-m
 import { FormInvitationStatisticsComponent } from './form-invitation-statistics/form-invitation-statistics.component';
 import { WeightageAndScoringSettingsComponent } from './weightage-and-scoring-settings/weightage-and-scoring-settings.component';
 import { WeightageEditorComponent } from './weightage-editor/weightage-editor.component';
-import { MultiSelectFilterComponent } from './components/multi-select-filter/multi-select-filter.component';
-import { FormsRoutingModule } from './forms-routing.module';
+import { MultiSelectFilterComponent } from './multi-select-filter/multi-select-filter.component';
 import { FormsRoutingModule } from './forms-routing.module';
 
 @NgModule({
@@ -61,7 +60,6 @@ import { FormsRoutingModule } from './forms-routing.module';
     FormLibraryComponent,
     MultiSelectFilterComponent,
     SettingsPanelComponent,
-    MultiSelectFilterComponent,
     FormCategoryManagerComponent,
     FileAttachmentManagerComponent,
     FormInvitationsComponent,

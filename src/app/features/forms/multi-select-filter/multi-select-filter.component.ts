@@ -1,8 +1,26 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-multi-select-filter',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatChipsModule,
+    MatMenuModule
+  ],
   templateUrl: './multi-select-filter.component.html',
   styleUrls: ['./multi-select-filter.component.scss']
 })
@@ -15,8 +33,7 @@ export class MultiSelectFilterComponent {
   @Input() getCounts?: (value: string) => number;
   
   @Output() selectionChange = new EventEmitter<string[]>();
-  
-  filterControl = new FormControl();
+
   panelOpen = false;
   
   constructor() {}

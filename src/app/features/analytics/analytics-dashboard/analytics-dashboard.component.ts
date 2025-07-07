@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormSubmission } from '../../../models/form.model';
+import { Input, Output, EventEmitter } from '@angular/core';
 import { FormSubmission } from '../../../models/form.model';
 
 @Component({
@@ -12,24 +12,7 @@ export class AnalyticsDashboardComponent {
   @Output() onFilterSubmissions = new EventEmitter<any>();
   
   selectedTimeRange: '7d' | '30d' | '90d' | '1y' = '30d';
-  
-  // Analytics metrics
-  totalSubmissions = 0;
-  approvedSubmissions = 0;
-  rejectedSubmissions = 0;
-  pendingSubmissions = 0;
-  submittedSubmissions = 0;
-  
-  // Approval metrics
-  fullyApprovedSubmissions = 0;
-  partiallyApprovedSubmissions = 0;
-  approvalRate = 0;
-  rejectionRate = 0;
-  fullApprovalRate = 0;
-  partialApprovalRate = 0;
-  submissions: FormSubmission[] = [];
-  selectedTimeRange: '7d' | '30d' | '90d' | '1y' = '30d';
-  
+
   // Chart data
   submissionChartData: any;
   riskChartData: any;

@@ -25,21 +25,20 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatMenuModule } from '@angular/material/menu';
 
 // Shared Components
+import { MultiSelectFilterComponent } from '../features/forms/components/multi-select-filter/multi-select-filter.component';
 import { MultiSelectCategoryComponent } from './multi-select-category/multi-select-category.component';
 import { MultiSelectAudienceComponent } from './multi-select-audience/multi-select-audience.component';
-// Import from feature module
-import { MultiSelectFilterComponent } from '@app/features/forms/components/multi-select-filter/multi-select-filter.component';
 
 @NgModule({
   declarations: [
     MultiSelectCategoryComponent,
     MultiSelectAudienceComponent,
-    // MultiSelectFilterComponent is now imported from feature module
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MultiSelectFilterComponent,
     
     // Material Modules
     MatButtonModule,

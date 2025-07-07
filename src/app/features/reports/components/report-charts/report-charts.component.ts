@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { FormSubmission } from '@app/models/form.model';
-import { ChartRendererService, ChartData } from '@app/services/chart-renderer.service';
+import { FormSubmission } from '../../../../models/form.model';
+import { ChartRendererService, ChartData } from '../../../../services/chart-renderer.service';
 
 @Component({
   selector: 'app-report-charts',

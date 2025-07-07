@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Output, EventEmitter } from '@angular/core';
 import { FormTemplate } from '../../../models/form.model';
 import { FormService } from '../../../services/form.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormService } from '@app/services/form.service';
 
 @Component({
   selector: 'app-form-library',
-  templateUrl: './form-library.component.html',
-  styleUrls: ['./form-library.component.scss']
   templateUrl: './form-library.component.html',
   styleUrls: ['./form-library.component.scss']
 })
@@ -220,10 +217,6 @@ export class FormLibraryComponent implements OnInit {
   useTemplate(template: FormTemplate): void {
     this.onUseTemplate.emit(template);
     this.snackBar.open(`Template "${template.name}" applied successfully`, 'Close', {
-      duration: 3000
-    });
-  }
-  
   getCategoryCount(category: string): number {
     return this.templates.filter(t => {
       const templateCategories = Array.isArray(t.category) ? t.category : [t.category];
