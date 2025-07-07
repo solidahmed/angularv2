@@ -1,0 +1,222 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <div class="logo-icon">SF</div>
+        <h1 class="logo-text">Form Builder Pro</h1>
+      </div>
+      
+      <div class="actions" *ngIf="activeTab === 'build-form'">
+        <button mat-stroked-button>
+          <mat-icon>share</mat-icon>
+          <span>Share</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Main Navigation Tabs -->
+    <mat-tab-group [(selectedIndex)]="activeTabIndex" (selectedIndexChange)="setActiveTab(['dashboard', 'review-submissions', 'forms', 'build-form'][selectedIndexChange])">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>dashboard</mat-icon>
+          <span class="tab-label">Dashboard</span>
+        </ng-template>
+        <app-analytics-dashboard 
+          [submissions]="submissions"
+          (onFilterSubmissions)="handleFilterSubmissions($event)">
+        </app-analytics-dashboard>
+      </mat-tab>
+      
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>assignment</mat-icon>
+          <span class="tab-label">Review</span>
+        </ng-template>
+        <mat-tab-group>
+          <mat-tab label="Submissions">
+            <app-submission-review
+              [submissions]="submissions"
+              [form]="publishedForms[0] || {}"
+              [initialFilters]="submissionFilters"
+              (onUpdateSubmission)="updateSubmission($event)">
+            </app-submission-review>
+          </mat-tab>
+          <mat-tab label="Reports">
+            <app-report-generation [submissions]="submissions"></app-report-generation>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-tab>
+      
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>folder</mat-icon>
+          <span class="tab-label">Forms</span>
+        </ng-template>
+        <mat-tab-group>
+          <mat-tab label="Drafts">
+            <div class="forms-list" *ngIf="savedDrafts.length > 0; else noDrafts">
+              <mat-card *ngFor="let form of savedDrafts" class="form-card">
+                <mat-card-content>
+                  <div class="form-card-content">
+                    <div class="form-info">
+                      <h3 class="form-title">{{ form.title }}</h3>
+                      <p class="form-description">{{ form.description || 'No description' }}</p>
+                      <div class="form-meta">
+                        <span class="form-date">{{ form.createdAt | date }}</span>
+                        <span class="form-badge draft">Draft</span>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button mat-stroked-button (click)="loadForm(form)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Load</span>
+                      </button>
+                      <button mat-flat-button color="primary" (click)="publishForm(form)">
+                        <mat-icon>send</mat-icon>
+                        <span>Publish</span>
+                      </button>
+                      <button mat-icon-button color="warn" [matMenuTriggerFor]="deleteMenu">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <mat-menu #deleteMenu="matMenu">
+                        <button mat-menu-item (click)="deleteForm(form)">
+                          <mat-icon>delete_forever</mat-icon>
+                          <span>Confirm Delete</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <ng-template #noDrafts>
+              <div class="empty-state">
+                <mat-icon>description</mat-icon>
+                <p>No draft forms available</p>
+              </div>
+            </ng-template>
+          </mat-tab>
+          
+          <mat-tab label="Published">
+            <div class="forms-list" *ngIf="publishedForms.length > 0; else noPublished">
+              <mat-card *ngFor="let form of publishedForms" class="form-card">
+                <mat-card-content>
+                  <div class="form-card-content">
+                    <div class="form-info">
+                      <h3 class="form-title">{{ form.title }}</h3>
+                      <p class="form-description">{{ form.description || 'No description' }}</p>
+                      <div class="form-meta">
+                        <span class="form-date">{{ form.createdAt | date }}</span>
+                        <span class="form-badge published">Published</span>
+                        <span class="form-submissions">{{ form.submissions }} submissions</span>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button mat-stroked-button (click)="loadForm(form)">
+                        <mat-icon>visibility</mat-icon>
+                        <span>View</span>
+                      </button>
+                      <button mat-stroked-button [matMenuTriggerFor]="shareMenu">
+                        <mat-icon>share</mat-icon>
+                        <span>Share</span>
+                      </button>
+                      <mat-menu #shareMenu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>link</mat-icon>
+                          <span>Copy Link</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>code</mat-icon>
+                          <span>Embed Code</span>
+                        </button>
+                      </mat-menu>
+                      <button mat-stroked-button (click)="moveToDraft(form)">
+                        <mat-icon>arrow_back</mat-icon>
+                        <span>To Draft</span>
+                      </button>
+                      <button mat-icon-button color="warn" [matMenuTriggerFor]="deletePublishedMenu">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <mat-menu #deletePublishedMenu="matMenu">
+                        <button mat-menu-item (click)="deleteForm(form)">
+                          <mat-icon>delete_forever</mat-icon>
+                          <span>Confirm Delete</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <ng-template #noPublished>
+              <div class="empty-state">
+                <mat-icon>book</mat-icon>
+                <p>No published forms available</p>
+                <p class="empty-state-subtitle">Publish your first form to see it here</p>
+              </div>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-tab>
+      
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>build</mat-icon>
+          <span class="tab-label">Build</span>
+        </ng-template>
+        <div class="build-container">
+          <div class="build-header">
+            <mat-tab-group [(selectedIndex)]="activeBuildTabIndex" (selectedIndexChange)="setActiveBuildTab(['builder', 'library', 'preview', 'invitations', 'settings'][selectedIndexChange])">
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>add</mat-icon>
+                  <span class="tab-label">Builder</span>
+                </ng-template>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>library_books</mat-icon>
+                  <span class="tab-label">Library</span>
+                </ng-template>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>visibility</mat-icon>
+                  <span class="tab-label">Preview</span>
+                </ng-template>
+              </mat-tab>
+              <mat-tab *ngIf="publishedForms.length > 0">
+                <ng-template mat-tab-label>
+                  <mat-icon>mail</mat-icon>
+                  <span class="tab-label">Invitations</span>
+                </ng-template>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>settings</mat-icon>
+                  <span class="tab-label">Settings</span>
+                </ng-template>
+              </mat-tab>
+            </mat-tab-group>
+            
+            <div class="build-actions">
+              <button mat-flat-button color="primary" (click)="createNewForm()">
+                <mat-icon>add</mat-icon>
+                <span>New Form</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="build-content">
+            <!-- Router outlet for form building components -->
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </main>
+</div>

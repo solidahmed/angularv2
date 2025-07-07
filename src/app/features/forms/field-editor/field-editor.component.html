@@ -1,0 +1,118 @@
+<mat-card class="field-editor-card">
+  <mat-card-header>
+    <mat-card-title class="field-editor-title">
+      <mat-icon *ngIf="readOnly">lock</mat-icon>
+      Field Properties
+      <span *ngIf="readOnly" class="read-only-label">(Read Only)</span>
+    </mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class="field-editor-content">
+    <!-- No Field Selected State -->
+    <div *ngIf="!selectedField" class="no-field-selected">
+      <p>
+        {{ readOnly ? "Published form - Select a field to view properties" : "Select a field to edit its properties" }}
+      </p>
+    </div>
+    
+    <!-- Field Properties Form -->
+    <form *ngIf="selectedField" [formGroup]="fieldForm" class="field-form">
+      <!-- Basic Properties -->
+      <mat-form-field appearance="outline">
+        <mat-label>Label</mat-label>
+        <input matInput formControlName="label">
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Placeholder</mat-label>
+        <input matInput formControlName="placeholder">
+      </mat-form-field>
+      
+      <div class="field-checkbox">
+        <mat-checkbox formControlName="required">Required field</mat-checkbox>
+      </div>
+      
+      <!-- Options for Select, Radio, Checkbox -->
+      <div *ngIf="['select', 'radio', 'checkbox'].includes(selectedField.type)" class="field-options">
+        <h3>Options</h3>
+        
+        <div *ngFor="let option of selectedField.options; let i = index" class="option-row">
+          <mat-form-field appearance="outline" class="option-input">
+            <input matInput [value]="option" (input)="updateOption(i, $any($event.target).value)">
+          </mat-form-field>
+          
+          <button mat-icon-button color="warn" (click)="removeOption(i)" [disabled]="readOnly">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        
+        <button mat-stroked-button (click)="addOption()" [disabled]="readOnly" class="add-option-button">
+          <mat-icon>add</mat-icon>
+          Add Option
+        </button>
+      </div>
+      
+      <!-- Scoring Configuration -->
+      <div class="scoring-section" formGroupName="scoring">
+        <div class="scoring-header">
+          <h3>Scoring</h3>
+          <mat-slide-toggle formControlName="enabled">Enable scoring</mat-slide-toggle>
+        </div>
+        
+        <div *ngIf="fieldForm.get('scoring.enabled')?.value" class="scoring-options">
+          <mat-form-field appearance="outline">
+            <mat-label>Maximum Points</mat-label>
+            <input matInput type="number" formControlName="maxPoints">
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Weight Multiplier</mat-label>
+            <mat-select formControlName="weightMultiplier">
+              <mat-option [value]="1">1x (Normal)</mat-option>
+              <mat-option [value]="2">2x (Double)</mat-option>
+              <mat-option [value]="3">3x (Triple)</mat-option>
+              <mat-option [value]="4">4x (Quadruple)</mat-option>
+              <mat-option [value]="5">5x (Quintuple)</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <!-- Correct Answers for Select, Radio, Checkbox -->
+          <div *ngIf="['select', 'radio', 'checkbox'].includes(selectedField.type)" class="correct-answers">
+            <h4>Correct Answers</h4>
+            
+            <div *ngFor="let answer of selectedField.scoring?.correctAnswers || []; let i = index" class="option-row">
+              <mat-form-field appearance="outline" class="option-input">
+                <mat-select [value]="answer" (selectionChange)="updateCorrectAnswer(i, $event.value)">
+                  <mat-option *ngFor="let option of selectedField.options" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              <button mat-icon-button color="warn" (click)="removeCorrectAnswer(i)" [disabled]="readOnly">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            
+            <button mat-stroked-button (click)="addCorrectAnswer()" [disabled]="readOnly" class="add-option-button">
+              <mat-icon>add</mat-icon>
+              Add Correct Answer
+            </button>
+          </div>
+          
+          <div class="field-checkbox">
+            <mat-checkbox formControlName="requiresManualReview">Requires manual review</mat-checkbox>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Validation Message -->
+      <div formGroupName="validation">
+        <mat-form-field appearance="outline">
+          <mat-label>Validation Message</mat-label>
+          <textarea matInput formControlName="message" rows="2" placeholder="Custom validation message"></textarea>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

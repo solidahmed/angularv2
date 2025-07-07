@@ -1,0 +1,69 @@
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.stat-card.blue {
+  background-color: #eff6ff;
+}
+
+.stat-card.green {
+  background-color: #f0fdf4;
+}
+
+.stat-card.yellow {
+  background-color: #fef9c3;
+}
+
+.stat-card.red {
+  background-color: #fef2f2;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.completion-rate {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.rate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.rate-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rate-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3b82f6;
+}

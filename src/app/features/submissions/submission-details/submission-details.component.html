@@ -1,0 +1,163 @@
+<div class="details-container">
+  <!-- Submitter Information -->
+  <mat-card class="info-card submitter-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">
+        <mat-icon *ngIf="submission.submissionType === 'vendor'">business</mat-icon>
+        <mat-icon *ngIf="submission.submissionType === 'external'">public</mat-icon>
+        <mat-icon *ngIf="submission.submissionType === 'internal'">person</mat-icon>
+        Submitter Information
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Name</div>
+          <div class="info-value">{{ getSubmitterDisplay(submission).name }}</div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Email</div>
+          <div class="info-value">{{ getSubmitterDisplay(submission).email }}</div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Organization</div>
+          <div class="info-value">{{ getSubmitterDisplay(submission).company }}</div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Submission Type</div>
+          <div class="info-value">
+            <span class="type-badge" [ngClass]="submission.submissionType">
+              {{ getSubmitterDisplay(submission).type }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Submission Status Information -->
+  <div class="status-card">
+    <div class="status-grid">
+      <div class="status-item">
+        <div class="status-label">Submitted At</div>
+        <div class="status-value">{{ submission.submittedAt | date:'medium' }}</div>
+      </div>
+      
+      <div class="status-item">
+        <div class="status-label">Time Spent</div>
+        <div class="status-value">{{ submission.timeSpent ? submission.timeSpent + ' minutes' : 'Not tracked' }}</div>
+      </div>
+      
+      <div class="status-item">
+        <div class="status-label">Completion</div>
+        <div class="status-value completion">
+          <span>{{ calculateCompletionPercentage(submission) }}%</span>
+          <span class="completion-badge">{{ getCompletionStatus(submission) }}</span>
+        </div>
+      </div>
+      
+      <div class="status-item">
+        <div class="status-label">Status</div>
+        <div class="status-value">
+          <span class="status-badge" [ngClass]="getStatusColor(submission.status, calculateCompletionPercentage(submission))">
+            {{ submission.status.replace('_', ' ') }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Completion Warning for incomplete submissions -->
+  <mat-card *ngIf="calculateCompletionPercentage(submission) < 100 && submission.status === 'submitted'" class="warning-card">
+    <mat-card-content>
+      <div class="warning-content">
+        <mat-icon>warning</mat-icon>
+        <p>
+          This submission is incomplete. Required fields still need to be completed.
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Score Information -->
+  <mat-card *ngIf="submission.score" class="info-card score-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">Score Details</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="score-grid">
+        <div class="score-item">
+          <div class="score-label">Total Score</div>
+          <div class="score-value total">
+            {{ submission.score.total }}/{{ submission.score.maxTotal }}
+          </div>
+        </div>
+        
+        <div class="score-item">
+          <div class="score-label">Percentage</div>
+          <div class="score-value percentage">{{ submission.score.percentage }}%</div>
+        </div>
+        
+        <div class="score-item">
+          <div class="score-label">Risk Level</div>
+          <div class="score-value">
+            <span class="risk-badge" [ngClass]="submission.score.riskLevel">
+              {{ submission.score.riskLevel }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Scores Display -->
+      <div *ngIf="submission.score.categoryScores" class="category-scores">
+        <h3 class="section-title">Category Scores</h3>
+        
+        <div class="category-list">
+          <div *ngFor="let category of submission.score.categoryScores | keyvalue" class="category-item">
+            <span class="category-name">{{ category.key }}</span>
+            <span class="category-score">{{ category.value }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Form Responses -->
+  <mat-card class="info-card responses-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">Form Responses</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="responses-list">
+        <div *ngFor="let response of submission.responses | keyvalue" class="response-item">
+          <div class="response-header">
+            <div class="response-label">
+              {{ response.key.replace(/_/g, ' ') | titlecase }}
+            </div>
+            
+            <div class="response-status">
+              <mat-icon *ngIf="hasResponse(response.value)" class="status-icon complete">check_circle</mat-icon>
+              <mat-icon *ngIf="!hasResponse(response.value)" class="status-icon incomplete">cancel</mat-icon>
+            </div>
+          </div>
+          
+          <div class="response-value">
+            <div *ngIf="hasResponse(response.value)" class="response-content">
+              {{ formatResponse(response.value) }}
+            </div>
+            
+            <div *ngIf="!hasResponse(response.value)" class="no-response">
+              No response provided
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

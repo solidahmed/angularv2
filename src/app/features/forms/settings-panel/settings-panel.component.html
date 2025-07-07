@@ -1,0 +1,337 @@
+<div class="settings-container">
+  <!-- Basic Settings -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Basic Settings</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Multiple submissions toggle -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Allow Multiple Submissions</div>
+          <p class="setting-description">Allow users to submit the form multiple times</p>
+        </div>
+        
+        <mat-slide-toggle
+          [checked]="form.settings.allowMultipleSubmissions"
+          (change)="handleSettingChange('allowMultipleSubmissions', $event.checked)">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Login requirement toggle -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Require Login</div>
+          <p class="setting-description">Users must be logged in to access the form</p>
+        </div>
+        
+        <mat-slide-toggle
+          [checked]="form.settings.requireLogin"
+          (change)="handleSettingChange('requireLogin', $event.checked)">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Progress bar toggle -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Show Progress Bar</div>
+          <p class="setting-description">Display progress indicator to users</p>
+        </div>
+        
+        <mat-slide-toggle
+          [checked]="form.settings.showProgressBar"
+          (change)="handleSettingChange('showProgressBar', $event.checked)">
+        </mat-slide-toggle>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Theme Settings -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Theme & Appearance</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="theme-setting">
+        <mat-label>Theme</mat-label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select [value]="form.settings.theme" (selectionChange)="handleThemeChange($event.value)">
+            <mat-option value="light">Light</mat-option>
+            <mat-option value="dark">Dark</mat-option>
+            <mat-option value="custom">Custom</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Custom CSS editor for custom theme -->
+      <div *ngIf="form.settings.theme === 'custom'" class="custom-css">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Custom CSS</mat-label>
+          <textarea matInput
+                   [value]="form.settings.customCss || ''"
+                   (change)="handleCustomCssChange($event.target.value)"
+                   placeholder="Enter custom CSS rules..."
+                   rows="6"
+                   class="css-textarea"></textarea>
+        </mat-form-field>
+        <p class="setting-description">
+          Add custom CSS to style your form
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Scoring and Weightage Settings -->
+  <app-weightage-and-scoring-settings
+    [fields]="form.fields"
+    [settings]="form.settings"
+    (updateField)="handleFieldUpdate($event.fieldId, $event.updates)"
+    (updateSettings)="handleSettingsUpdate($event)">
+  </app-weightage-and-scoring-settings>
+
+  <!-- Approval Workflow -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Approval Workflow</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Enable approval workflow -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Enable Approval Workflow</div>
+          <p class="setting-description">Require manual approval for submissions</p>
+        </div>
+        
+        <mat-slide-toggle
+          [checked]="form.settings.approval?.enabled || false"
+          (change)="handleApprovalChange('enabled', $event.checked); isApprovalEnabled = $event.checked">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Auto-approve threshold -->
+      <div *ngIf="isApprovalEnabled" class="approval-settings">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Auto-Approve Score Threshold</mat-label>
+          <input matInput type="number" min="0" max="100"
+                 [value]="form.settings.approval?.autoApproveScore || 80"
+                 (change)="handleApprovalChange('autoApproveScore', $event.target.value)">
+        </mat-form-field>
+        <p class="setting-description">
+          Submissions with scores above this threshold will be auto-approved
+        </p>
+        
+        <!-- Approvers list -->
+        <div class="approvers-section">
+          <mat-label>Approvers</mat-label>
+          
+          <div class="approvers-list">
+            <div *ngFor="let approver of form.settings.approval?.approvers || []; let i = index" class="approver-item">
+              <mat-form-field appearance="outline" class="full-width">
+                <input matInput [value]="approver"
+                       (change)="handleApprovalChange('approvers', 
+                                 (form.settings.approval?.approvers || []).map((a, idx) => 
+                                  idx === i ? $event.target.value : a))">
+              </mat-form-field>
+              
+              <button mat-icon-button color="warn"
+                      (click)="handleApprovalChange('approvers', 
+                               (form.settings.approval?.approvers || []).filter((_, idx) => idx !== i))">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          
+          <button mat-stroked-button
+                  (click)="handleApprovalChange('approvers', 
+                           [...(form.settings.approval?.approvers || []), ''])">
+            Add Approver
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Document Settings -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Document Attachments</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Enable document uploads -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Enable Document Uploads</div>
+          <p class="setting-description">Allow users to upload documents</p>
+        </div>
+        
+        <mat-slide-toggle
+          [checked]="form.settings.documents?.enabled || false"
+          (change)="handleDocumentChange('enabled', $event.checked); isDocumentsEnabled = $event.checked">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Document configuration -->
+      <div *ngIf="isDocumentsEnabled" class="document-settings">
+        <!-- Allowed file types -->
+        <div class="file-types">
+          <mat-label>Allowed File Types</mat-label>
+          
+          <div class="file-types-grid">
+            <mat-checkbox *ngFor="let type of ['pdf', 'doc', 'docx', 'jpg', 'png', 'xlsx']"
+                         [checked]="(form.settings.documents?.allowedTypes || []).includes(type)"
+                         (change)="handleDocumentChange('allowedTypes', 
+                                   $event.checked 
+                                     ? [...(form.settings.documents?.allowedTypes || []), type]
+                                     : (form.settings.documents?.allowedTypes || []).filter(t => t !== type))">
+              {{ type.toUpperCase() }}
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <!-- Max file size -->
+        <mat-form-field appearance="outline">
+          <mat-label>Maximum File Size (MB)</mat-label>
+          <input matInput type="number" min="1" max="100"
+                 [value]="form.settings.documents?.maxSize || 10"
+                 (change)="handleDocumentChange('maxSize', $event.target.value)">
+        </mat-form-field>
+
+        <!-- Required documents -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Required Documents</mat-label>
+          <textarea matInput
+                   [value]="(form.settings.documents?.requiredDocuments || []).join('\n')"
+                   (change)="handleDocumentChange('requiredDocuments', 
+                             $event.target.value.split('\n').filter(doc => doc.trim()))"
+                   placeholder="Enter required document names (one per line)"
+                   rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Expiration Settings -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Expiration Settings</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Enable expiration -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Enable Expiration</div>
+          <p class="setting-description">Set an expiration date for this form</p>
+        </div>
+        
+        <mat-slide-toggle
+          [checked]="form.settings.expiration?.enabled || false"
+          (change)="handleExpirationChange('enabled', $event.checked); isExpirationEnabled = $event.checked">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Expiration configuration options -->
+      <div *ngIf="isExpirationEnabled" class="expiration-settings">
+        <!-- Expiration date -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Expiration Date</mat-label>
+          <input matInput [matDatepicker]="expirationPicker"
+                 [value]="form.settings.expiration?.expirationDate"
+                 (dateChange)="handleExpirationChange('expirationDate', $event.value)">
+          <mat-datepicker-toggle matSuffix [for]="expirationPicker"></mat-datepicker-toggle>
+          <mat-datepicker #expirationPicker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- Expiration message -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Expiration Message</mat-label>
+          <textarea matInput
+                   [value]="form.settings.expiration?.message || 'This form has expired.'"
+                   (change)="handleExpirationChange('message', $event.target.value)"
+                   placeholder="Enter expiration message..."
+                   rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Email Distribution Settings -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Email Distribution</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Enable email distribution -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Enable Email Distribution</div>
+          <p class="setting-description">Distribute this form via email</p>
+        </div>
+        
+        <mat-slide-toggle
+          [checked]="form.settings.emailDistribution?.enabled || false"
+          (change)="handleEmailDistributionChange('enabled', $event.checked); isEmailDistributionEnabled = $event.checked">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Email distribution configuration options -->
+      <div *ngIf="isEmailDistributionEnabled" class="email-settings">
+        <!-- Reminder settings -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Enable Reminders</div>
+            <p class="setting-description">Send reminder emails to recipients</p>
+          </div>
+          
+          <mat-slide-toggle
+            [checked]="form.settings.emailDistribution?.reminderEnabled || false"
+            (change)="handleEmailDistributionChange('reminderEnabled', $event.checked)">
+          </mat-slide-toggle>
+        </div>
+
+        <!-- Reminder interval -->
+        <div *ngIf="form.settings.emailDistribution?.reminderEnabled">
+          <mat-form-field appearance="outline">
+            <mat-label>Reminder Interval (days)</mat-label>
+            <input matInput type="number" min="1"
+                   [value]="form.settings.emailDistribution?.reminderIntervalDays || 7"
+                   (change)="handleEmailDistributionChange('reminderIntervalDays', $event.target.value)">
+          </mat-form-field>
+        </div>
+
+        <!-- Max reminders -->
+        <div *ngIf="form.settings.emailDistribution?.reminderEnabled">
+          <mat-form-field appearance="outline">
+            <mat-label>Max Reminders</mat-label>
+            <input matInput type="number" min="1"
+                   [value]="form.settings.emailDistribution?.maxReminders || 3"
+                   (change)="handleEmailDistributionChange('maxReminders', $event.target.value)">
+          </mat-form-field>
+        </div>
+
+        <!-- Recipients list -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Recipients</mat-label>
+          <textarea matInput
+                   [value]="(form.settings.emailDistribution?.recipients || []).map(r => r.email).join('\n')"
+                   (change)="handleEmailDistributionChange('recipients', 
+                             $event.target.value.split('\n')
+                               .filter(email => email.trim() !== '')
+                               .map(email => ({ 
+                                 id: Date.now().toString(), 
+                                 email, 
+                                 status: 'pending', 
+                                 remindersSent: 0 
+                               })))"
+                   placeholder="Enter recipient emails (one per line)"
+                   rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

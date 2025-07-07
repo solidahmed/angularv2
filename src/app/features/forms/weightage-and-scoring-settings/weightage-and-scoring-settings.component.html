@@ -1,0 +1,134 @@
+<div class="weightage-container">
+  <!-- Scoring Settings -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Scoring Configuration</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content class="card-content">
+      <div class="setting-row">
+        <div class="setting-label">
+          <div>Enable Scoring</div>
+          <p class="setting-description">Enable scoring for this form</p>
+        </div>
+        
+        <mat-slide-toggle 
+          [checked]="settings.scoring?.enabled || false"
+          (change)="handleScoringSettingChange('enabled', $event.checked)">
+        </mat-slide-toggle>
+      </div>
+      
+      <div *ngIf="settings.scoring?.enabled" class="scoring-settings">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Max Total Points</mat-label>
+          <input matInput type="number" min="1"
+                 [value]="settings.scoring.maxTotalPoints || 100"
+                 (change)="handleScoringSettingChange('maxTotalPoints', parseInt($event.target.value) || 100)">
+        </mat-form-field>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <div>Show Score to User</div>
+            <p class="setting-description">Display the score to the user after submission</p>
+          </div>
+          
+          <mat-slide-toggle 
+            [checked]="settings.scoring.showScoreToUser || false"
+            (change)="handleScoringSettingChange('showScoreToUser', $event.checked)">
+          </mat-slide-toggle>
+        </div>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Passing Score (%)</mat-label>
+          <input matInput type="number" min="0" max="100"
+                 [value]="settings.scoring.passingScore || 70"
+                 (change)="handleScoringSettingChange('passingScore', parseInt($event.target.value) || 70)">
+        </mat-form-field>
+        
+        <div class="risk-thresholds">
+          <h3 class="thresholds-title">Risk Thresholds</h3>
+          
+          <div class="thresholds-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Low</mat-label>
+              <input matInput type="number" min="0" max="100"
+                     [value]="settings.scoring.riskThresholds?.low || 30"
+                     (change)="handleScoringSettingChange('riskThresholds', {
+                       ...settings.scoring?.riskThresholds,
+                       low: parseInt($event.target.value) || 30
+                     })">
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Medium</mat-label>
+              <input matInput type="number" min="0" max="100"
+                     [value]="settings.scoring.riskThresholds?.medium || 60"
+                     (change)="handleScoringSettingChange('riskThresholds', {
+                       ...settings.scoring?.riskThresholds,
+                       medium: parseInt($event.target.value) || 60
+                     })">
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>High</mat-label>
+              <input matInput type="number" min="0" max="100"
+                     [value]="settings.scoring.riskThresholds?.high || 90"
+                     (change)="handleScoringSettingChange('riskThresholds', {
+                       ...settings.scoring?.riskThresholds,
+                       high: parseInt($event.target.value) || 90
+                     })">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Question Weightage -->
+  <mat-card *ngIf="settings.scoring?.enabled">
+    <mat-card-header>
+      <mat-card-title>Question Weightage</mat-card-title>
+      <mat-card-subtitle>Configure the importance of each scoring field</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content class="card-content">
+      <div *ngIf="scoringFields.length === 0" class="empty-fields">
+        <p>No scoring fields available. Enable scoring on fields to configure weightage.</p>
+      </div>
+      
+      <div *ngIf="scoringFields.length > 0" class="weightage-content">
+        <div class="weightage-header">
+          <div class="header-question">Question</div>
+          <div class="header-weight">Weight</div>
+          <div class="header-impact">Impact</div>
+        </div>
+        
+        <div *ngFor="let field of scoringFields" class="weightage-row">
+          <div class="field-info">
+            <div class="field-icon">📝</div>
+            <div class="field-name">{{ field.label }}</div>
+          </div>
+          
+          <div class="weight-buttons">
+            <button *ngFor="let weight of [1, 2, 3, 4, 5]"
+                    class="weight-button"
+                    [class.active]="(field.scoring?.weightMultiplier || 1) >= weight"
+                    (click)="handleWeightChange(field.id, weight)">
+              x{{ weight }}
+            </button>
+          </div>
+          
+          <div class="impact-value">
+            {{ calculateImpact(field.scoring?.weightMultiplier || 1) }}%
+          </div>
+        </div>
+        
+        <div class="weightage-actions">
+          <button mat-stroked-button (click)="resetWeights()">
+            Reset weights
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,41 @@
+<div class="multi-select-container">
+  <div class="select-trigger" (click)="panelOpen = !panelOpen">
+    <div class="selected-values">
+      <ng-container *ngIf="selectedValues.length === 0">
+        <span class="placeholder">{{ placeholder }}</span>
+      </ng-container>
+      
+      <ng-container *ngIf="selectedValues.length > 0">
+        <span class="display-text">{{ getDisplayText() }}</span>
+        
+        <div *ngIf="selectedValues.length > 1" class="selected-badges">
+          <div *ngFor="let value of selectedValues.slice(0, 2)" class="badge">
+            {{ formatOptionLabel(value) }}
+            <button class="badge-remove" (click)="removeValue(value, $event)">×</button>
+          </div>
+          
+          <div *ngIf="selectedValues.length > 2" class="badge more-badge">
+            +{{ selectedValues.length - 2 }} more
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    
+    <mat-icon>{{ panelOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+  </div>
+  
+  <div class="select-panel" *ngIf="panelOpen">
+    <div class="panel-content">
+      <div *ngFor="let option of options" class="option-item">
+        <mat-checkbox 
+          [checked]="option === 'all' ? selectedValues.length === 0 : selectedValues.includes(option)"
+          (change)="toggleValue(option)">
+          {{ formatOptionLabel(option) }}
+          <span *ngIf="showCounts && getCounts" class="option-count">
+            ({{ getCounts(option) }})
+          </span>
+        </mat-checkbox>
+      </div>
+    </div>
+  </div>
+</div>

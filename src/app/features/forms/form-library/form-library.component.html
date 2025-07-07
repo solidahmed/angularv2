@@ -1,0 +1,95 @@
+<div class="library-container">
+  <div class="library-header">
+    <h1 class="library-title">Form Template Library</h1>
+    <p class="library-subtitle">Browse and use pre-built templates for your forms</p>
+    
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput placeholder="Search templates" (input)="onSearchChange($event)">
+      </mat-form-field>
+    </div>
+    
+    <div class="filter-container">
+      <div class="filter-group">
+        <h3 class="filter-title">Categories</h3>
+        <app-multi-select-filter
+          [options]="categories"
+          [selectedValues]="selectedCategories"
+          placeholder="All Categories"
+          [showCounts]="true"
+          [getCounts]="getCategoryCount.bind(this)"
+          (selectionChange)="updateCategoryFilter($event)">
+        </app-multi-select-filter>
+      </div>
+      
+      <div class="filter-group">
+        <h3 class="filter-title">Sectors</h3>
+        <app-multi-select-filter
+          [options]="sectors"
+          [selectedValues]="selectedSectors"
+          placeholder="All Sectors"
+          [showCounts]="true"
+          [getCounts]="getSectorCount.bind(this)"
+          (selectionChange)="updateSectorFilter($event)">
+        </app-multi-select-filter>
+      </div>
+    </div>
+  </div>
+  
+  <div class="templates-container">
+    <h2 class="templates-heading">
+      {{ filteredTemplates.length }} Templates Found
+    </h2>
+    
+    <div class="templates-grid">
+      <mat-card *ngFor="let template of filteredTemplates" class="template-card">
+        <mat-card-header>
+          <mat-card-title class="template-title">{{ template.name }}</mat-card-title>
+          <mat-card-subtitle>
+            <div class="template-badges">
+              <span class="template-badge category">
+                {{ template.category }}
+              </span>
+              <span class="template-badge sector">
+                {{ Array.isArray(template.sector) ? 'Multi-Sector' : template.sector }}
+              </span>
+            </div>
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <p class="template-description">{{ template.description }}</p>
+          
+          <div class="template-audience">
+            <h4 class="audience-title">Target Audience:</h4>
+            <div class="audience-badges">
+              <span *ngFor="let audience of template.targetAudience" class="audience-badge">
+                <mat-icon *ngIf="audience === 'vendor'">business</mat-icon>
+                <mat-icon *ngIf="audience === 'internal'">people</mat-icon>
+                <mat-icon *ngIf="audience === 'external'">public</mat-icon>
+                {{ audience | titlecase }}
+              </span>
+            </div>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="useTemplate(template)">
+            Use Template
+          </button>
+          <button mat-button>
+            Preview
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    
+    <!-- Empty State -->
+    <div *ngIf="filteredTemplates.length === 0" class="empty-state">
+      <mat-icon>search_off</mat-icon>
+      <h3>No templates found</h3>
+      <p>Try adjusting your filters or search term</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,183 @@
+.sharing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.url-section {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.url-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.sharing-tips {
+  background-color: #eff6ff;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.tips-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e40af;
+  margin: 0 0 8px 0;
+}
+
+.tips-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  color: #1e40af;
+  font-size: 14px;
+}
+
+.tips-list li {
+  margin-bottom: 4px;
+}
+
+.embed-options {
+  margin-bottom: 16px;
+}
+
+.options-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.options-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.embed-code {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.code-textarea {
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.embedding-guide {
+  background-color: #f0fdf4;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.guide-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #166534;
+  margin: 0 0 8px 0;
+}
+
+.guide-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  color: #166534;
+  font-size: 14px;
+}
+
+.guide-list li {
+  margin-bottom: 4px;
+}
+
+.export-section {
+  margin-bottom: 16px;
+}
+
+.export-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.export-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 16px 0;
+}
+
+.export-button {
+  width: 100%;
+}
+
+.pdf-features {
+  background-color: #fff7ed;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.features-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #9a3412;
+  margin: 0 0 8px 0;
+}
+
+.features-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  color: #9a3412;
+  font-size: 14px;
+}
+
+.features-list li {
+  margin-bottom: 4px;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.analytics-item {
+  text-align: center;
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+.analytics-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.analytics-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .url-section,
+  .embed-code {
+    flex-direction: column;
+  }
+  
+  .options-buttons {
+    flex-wrap: wrap;
+  }
+}

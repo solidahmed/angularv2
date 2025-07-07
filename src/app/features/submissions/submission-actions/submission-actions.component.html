@@ -1,0 +1,241 @@
+<div class="actions-container">
+  <!-- Activity Log -->
+  <mat-card class="activity-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">
+        <mat-icon>schedule</mat-icon>
+        Activity Log
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="!submission.activityLog || submission.activityLog.length === 0" class="empty-log">
+        <mat-icon>schedule</mat-icon>
+        <p>No previous activity</p>
+      </div>
+      
+      <div *ngIf="submission.activityLog && submission.activityLog.length > 0" class="activity-list">
+        <div *ngFor="let activity of submission.activityLog" class="activity-item">
+          <div class="activity-header">
+            <div class="activity-info">
+              <span class="activity-type">{{ activity.action.replace('_', ' ') }}</span>
+              <span *ngIf="activity.metadata?.urgency" class="urgency-badge" [ngClass]="activity.metadata.urgency">
+                {{ activity.metadata.urgency }} priority
+              </span>
+            </div>
+            
+            <div class="activity-meta">
+              <div>{{ activity.reviewedBy }}</div>
+              <div>{{ activity.reviewedAt | date }}</div>
+            </div>
+          </div>
+          
+          <p class="activity-comments">{{ activity.comments }}</p>
+          
+          <div *ngIf="activity.metadata" class="activity-metadata">
+            <p *ngIf="activity.metadata.reason" class="metadata-item">
+              Reason: {{ activity.metadata.reason }}
+            </p>
+            
+            <p *ngIf="activity.metadata.specificFields && activity.metadata.specificFields.length > 0" class="metadata-item">
+              Fields: {{ activity.metadata.specificFields.join(', ') }}
+            </p>
+            
+            <p *ngIf="activity.metadata.requiredDocuments && activity.metadata.requiredDocuments.length > 0" class="metadata-item">
+              Required docs: {{ activity.metadata.requiredDocuments.join(', ') }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Review Actions -->
+  <mat-card class="actions-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">
+        Review Actions
+        <mat-icon *ngIf="!isFormComplete() && submission.status === 'submitted'" class="warning-icon">warning</mat-icon>
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="!isFormComplete() && submission.status === 'submitted'" class="incomplete-warning">
+        This form is incomplete. Only reminder can be sent until all required fields are completed.
+      </div>
+      
+      <div class="action-type-selector">
+        <button mat-button [class.active]="actionType === 'simple'" (click)="actionType = 'simple'">
+          Simple
+        </button>
+        <button mat-button [class.active]="actionType === 'advanced'" (click)="actionType = 'advanced'">
+          Advanced Options
+        </button>
+      </div>
+      
+      <!-- Advanced Options -->
+      <div *ngIf="actionType === 'advanced'" class="advanced-options">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Urgency Level</mat-label>
+          <mat-select formControlName="urgencyLevel">
+            <mat-option value="low">Low Priority</mat-option>
+            <mat-option value="medium">Medium Priority</mat-option>
+            <mat-option value="high">High Priority</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Rejection Reason (if applicable)</mat-label>
+          <mat-select formControlName="rejectionReason">
+            <mat-option value="">Select reason...</mat-option>
+            <mat-option value="incomplete_information">Incomplete Information</mat-option>
+            <mat-option value="invalid_documents">Invalid Documents</mat-option>
+            <mat-option value="policy_violation">Policy Violation</mat-option>
+            <mat-option value="technical_issues">Technical Issues</mat-option>
+            <mat-option value="other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <div class="specific-fields">
+          <h4 class="fields-title">Specific Fields Needing Attention</h4>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-select formControlName="specificFields" multiple>
+              <mat-option *ngFor="let field of form?.fields" [value]="field.id">
+                {{ field.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Required Documents</mat-label>
+          <textarea matInput formControlName="requiredDocuments" rows="3" 
+                   placeholder="Enter required documents (one per line)"></textarea>
+        </mat-form-field>
+      </div>
+      
+      <!-- AI Suggestion Box -->
+      <div *ngIf="submission.score && isFormComplete() && submission.status !== 'approved'" class="ai-suggestion">
+        <h4 class="suggestion-title">
+          <mat-icon>target</mat-icon>
+          AI Recommendation
+        </h4>
+        
+        <div class="suggestion-content">
+          <p class="suggestion-text">
+            Suggested: <span class="suggestion-value">{{ getApprovalSuggestion(submission).type | titlecase }} Approval</span>
+          </p>
+          <p class="suggestion-reason">{{ getApprovalSuggestion(submission).reason }}</p>
+          <button mat-stroked-button color="primary" (click)="applyAISuggestion()" class="suggestion-button">
+            Apply Suggestion
+          </button>
+        </div>
+      </div>
+      
+      <!-- Approval Type Selection -->
+      <div *ngIf="(submission.status === 'submitted' || submission.status === 'under_review') && isFormComplete()" class="approval-type">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Approval Type (Required for Approval)</mat-label>
+          <mat-select formControlName="approvalType">
+            <mat-option value="fully">
+              <div class="option-content">
+                <mat-icon class="option-icon green">check_circle</mat-icon>
+                <span>Fully Approved - Complete implementation</span>
+              </div>
+            </mat-option>
+            <mat-option value="partially">
+              <div class="option-content">
+                <mat-icon class="option-icon orange">warning</mat-icon>
+                <span>Partially Approved - Conditional implementation</span>
+              </div>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <p class="approval-description">
+          {{ actionForm.get('approvalType')?.value === 'fully' 
+            ? 'Full approval means all requirements are met and can be implemented as-is.'
+            : 'Partial approval means implementation with conditions or limitations.'
+          }}
+        </p>
+      </div>
+      
+      <!-- Comments Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>
+          {{ !isFormComplete() && submission.status === 'submitted' ? 'Reminder Message' : 'Review Comments' }}
+        </mat-label>
+        <textarea matInput formControlName="reviewComments" rows="3" 
+                 [placeholder]="!isFormComplete() && submission.status === 'submitted' 
+                               ? 'Add a message to remind the user to complete the form...'
+                               : 'Add comments about this submission...'"></textarea>
+      </mat-form-field>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <!-- For incomplete submissions -->
+        <div *ngIf="!isFormComplete() && submission.status === 'submitted'">
+          <button mat-raised-button color="primary" (click)="handleSendReminder()">
+            <mat-icon>mail</mat-icon>
+            Send Reminder
+          </button>
+        </div>
+        
+        <!-- For approved submissions -->
+        <div *ngIf="submission.status === 'approved'" class="button-group">
+          <button mat-raised-button color="warn" (click)="handleStatusChange('rejected')">
+            <mat-icon>cancel</mat-icon>
+            Reject
+          </button>
+          
+          <button mat-stroked-button (click)="handleStatusChange('under_review')">
+            <mat-icon>visibility</mat-icon>
+            Request More Info
+          </button>
+          
+          <button mat-stroked-button color="primary" (click)="handleResendForm()">
+            <mat-icon>refresh</mat-icon>
+            Resend Form
+          </button>
+        </div>
+        
+        <!-- For rejected submissions -->
+        <div *ngIf="submission.status === 'rejected'" class="button-group">
+          <button mat-raised-button color="primary" (click)="handleStatusChange('approved')">
+            <mat-icon>check_circle</mat-icon>
+            Approve
+          </button>
+          
+          <button mat-stroked-button (click)="handleStatusChange('under_review')">
+            <mat-icon>visibility</mat-icon>
+            Request More Info
+          </button>
+          
+          <button mat-stroked-button color="primary" (click)="handleResendForm()">
+            <mat-icon>refresh</mat-icon>
+            Resend Form
+          </button>
+        </div>
+        
+        <!-- For other submissions -->
+        <div *ngIf="(submission.status === 'submitted' || submission.status === 'under_review') && isFormComplete()" class="button-group">
+          <button mat-raised-button color="primary" (click)="handleStatusChange('approved')" class="approve-button">
+            <mat-icon>check_circle</mat-icon>
+            Approve
+          </button>
+          
+          <button mat-raised-button color="warn" (click)="handleStatusChange('rejected')">
+            <mat-icon>cancel</mat-icon>
+            Reject
+          </button>
+          
+          <button mat-stroked-button (click)="handleStatusChange('under_review')">
+            <mat-icon>visibility</mat-icon>
+            Request More Info
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

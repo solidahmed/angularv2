@@ -1,0 +1,18 @@
+<mat-card class="field-palette-card">
+  <mat-card-header>
+    <mat-card-title>Form Fields</mat-card-title>
+    <mat-card-subtitle>Drag fields to the canvas to add them</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class="field-palette-content">
+    <button mat-stroked-button 
+            *ngFor="let field of fieldTypes"
+            class="field-button"
+            (click)="handleAddField(field.type)"
+            draggable="true"
+            (dragstart)="onDragStart($event, field.type)">
+      <mat-icon>{{ field.icon }}</mat-icon>
+      <span>{{ field.label }}</span>
+    </button>
+  </mat-card-content>
+</mat-card>

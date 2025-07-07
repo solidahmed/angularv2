@@ -1,0 +1,49 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Question Weightage</mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div *ngIf="scoringFields.length === 0" class="empty-fields">
+      <p>No scoring fields available. Enable scoring on fields to configure weightage.</p>
+    </div>
+    
+    <div *ngIf="scoringFields.length > 0" class="weightage-content">
+      <div class="weightage-header">
+        <div class="header-question">Tests</div>
+        <div class="header-weight">Weights</div>
+        <div class="header-impact">Impact</div>
+      </div>
+      
+      <div *ngFor="let field of scoringFields" class="weightage-row">
+        <div class="field-info">
+          <div class="field-icon">📝</div>
+          <div class="field-name">{{ field.label }}</div>
+        </div>
+        
+        <div class="weight-buttons">
+          <button *ngFor="let weight of [1, 2, 3, 4, 5]"
+                  class="weight-button"
+                  [class.active]="(field.scoring?.weightMultiplier || 1) >= weight"
+                  (click)="handleWeightChange(field.id, weight)">
+            x{{ weight }}
+          </button>
+        </div>
+        
+        <div class="impact-value">
+          {{ calculateImpact(field.scoring?.weightMultiplier || 1) }}%
+        </div>
+      </div>
+      
+      <div class="weightage-actions">
+        <button mat-stroked-button (click)="resetWeights()">
+          Reset weights
+        </button>
+        
+        <button mat-raised-button color="primary">
+          Set weights
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,39 @@
+<div class="multi-select-container">
+  <label class="select-label">Target Audience</label>
+  
+  <div class="select-trigger" [class.disabled]="disabled" (click)="panelOpen = !panelOpen">
+    <div class="selected-values">
+      <ng-container *ngIf="selectedAudiences.length === 0">
+        <span class="placeholder">Select audiences...</span>
+      </ng-container>
+      
+      <ng-container *ngIf="selectedAudiences.length > 0">
+        <div class="selected-badges">
+          <div *ngFor="let audience of selectedAudiences" class="badge">
+            <mat-icon class="badge-icon">{{ getAudienceOption(audience)?.icon }}</mat-icon>
+            {{ getAudienceOption(audience)?.label }}
+            <button class="badge-remove" (click)="removeAudience(audience, $event)" [disabled]="disabled">×</button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    
+    <mat-icon>{{ panelOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+  </div>
+  
+  <div class="select-panel" *ngIf="panelOpen">
+    <div class="panel-content">
+      <div *ngFor="let option of audienceOptions" class="option-item">
+        <mat-checkbox 
+          [checked]="selectedAudiences.includes(option.value)"
+          (change)="toggleAudience(option.value)"
+          [disabled]="disabled">
+          <div class="option-content">
+            <mat-icon class="option-icon">{{ option.icon }}</mat-icon>
+            {{ option.label }}
+          </div>
+        </mat-checkbox>
+      </div>
+    </div>
+  </div>
+</div>

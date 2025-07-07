@@ -1,0 +1,278 @@
+<div class="analytics-container">
+  <!-- Overview Cards -->
+  <div class="overview-cards">
+    <mat-card class="stat-card" (click)="filterByStatus('all')">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-info">
+            <p class="stat-label">Total Submissions</p>
+            <p class="stat-value">{{ totalSubmissions }}</p>
+          </div>
+          <div class="stat-icon">
+            <mat-icon>description</mat-icon>
+          </div>
+        </div>
+        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" (click)="filterByStatus('approved')">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-info">
+            <p class="stat-label">Approved</p>
+            <p class="stat-value approved">{{ approvedSubmissions }}</p>
+          </div>
+          <div class="stat-icon">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+        </div>
+        <mat-progress-bar mode="determinate" value="{{ approvalRate }}" color="primary"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" (click)="filterByApprovalType('fully')">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-info">
+            <p class="stat-label">Fully Approved</p>
+            <p class="stat-value fully-approved">{{ fullyApprovedSubmissions }}</p>
+          </div>
+          <div class="stat-icon">
+            <mat-icon>verified</mat-icon>
+          </div>
+        </div>
+        <mat-progress-bar mode="determinate" value="{{ fullApprovalRate }}" color="accent"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" (click)="filterByApprovalType('partially')">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-info">
+            <p class="stat-label">Partially Approved</p>
+            <p class="stat-value partially-approved">{{ partiallyApprovedSubmissions }}</p>
+          </div>
+          <div class="stat-icon">
+            <mat-icon>shield</mat-icon>
+          </div>
+        </div>
+        <mat-progress-bar mode="determinate" value="{{ 100 - fullApprovalRate }}" color="warn"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" (click)="filterByStatus('rejected')">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-info">
+            <p class="stat-label">Rejected</p>
+            <p class="stat-value rejected">{{ rejectedSubmissions }}</p>
+          </div>
+          <div class="stat-icon">
+            <mat-icon>cancel</mat-icon>
+          </div>
+        </div>
+        <mat-progress-bar mode="determinate" value="{{ rejectionRate }}" color="warn"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" (click)="filterByStatus('under_review')">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-info">
+            <p class="stat-label">Pending Review</p>
+            <p class="stat-value">{{ pendingSubmissions }}</p>
+          </div>
+          <div class="stat-icon">
+            <mat-icon class="pending-icon">schedule</mat-icon>
+          </div>
+        </div>
+        <mat-progress-bar mode="determinate" value="{{ (pendingSubmissions / totalSubmissions) * 100 }}"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Main Analytics Tabs -->
+  <mat-tab-group class="analytics-tabs">
+    <mat-tab label="Overview">
+      <div class="tab-content">
+        <div class="chart-grid">
+          <!-- Submission Status Distribution -->
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>pie_chart</mat-icon>
+                Submission Status Distribution
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="chart-container">
+                <canvas baseChart
+                        [data]="statusChartData"
+                        [type]="'doughnut'"
+                        [options]="{ responsive: true }">
+                </canvas>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Risk Level Distribution -->
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>shield</mat-icon>
+                Risk Level Distribution
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="chart-container">
+                <canvas baseChart
+                        [data]="riskChartData"
+                        [type]="'bar'"
+                        [options]="{ responsive: true }">
+                </canvas>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Approvals">
+      <div class="tab-content">
+        <div class="chart-grid">
+          <!-- Approval Types Breakdown -->
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon class="emerald-icon">verified</mat-icon>
+                Approval Types Distribution
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="approval-metrics">
+                <!-- Fully Approved -->
+                <div class="approval-metric">
+                  <div class="metric-header">
+                    <div class="metric-indicator emerald"></div>
+                    <span class="metric-label">Fully Approved</span>
+                    <div class="metric-value">
+                      <span class="value-number">{{ fullyApprovedSubmissions }}</span>
+                      <span class="value-percent">({{ fullApprovalRate.toFixed(1) }}%)</span>
+                    </div>
+                  </div>
+                  <mat-progress-bar mode="determinate" value="{{ fullApprovalRate }}" color="primary"></mat-progress-bar>
+                </div>
+                
+                <!-- Partially Approved -->
+                <div class="approval-metric">
+                  <div class="metric-header">
+                    <div class="metric-indicator orange"></div>
+                    <span class="metric-label">Partially Approved</span>
+                    <div class="metric-value">
+                      <span class="value-number">{{ partiallyApprovedSubmissions }}</span>
+                      <span class="value-percent">({{ (100 - fullApprovalRate).toFixed(1) }}%)</span>
+                    </div>
+                  </div>
+                  <mat-progress-bar mode="determinate" value="{{ 100 - fullApprovalRate }}" color="accent"></mat-progress-bar>
+                </div>
+              </div>
+              
+              <!-- Pie chart -->
+              <div class="chart-container">
+                <canvas baseChart
+                        [data]="{
+                          labels: ['Fully Approved', 'Partially Approved'],
+                          datasets: [{
+                            data: [fullyApprovedSubmissions, partiallyApprovedSubmissions],
+                            backgroundColor: ['#22c55e', '#f59e0b']
+                          }]
+                        }"
+                        [type]="'pie'"
+                        [options]="{ responsive: true }">
+                </canvas>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Approval Quality Metrics -->
+          <mat-card class="chart-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>target</mat-icon>
+                Approval Quality Metrics
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="quality-score">
+                <div class="score-value">{{ fullApprovalRate.toFixed(1) }}%</div>
+                <div class="score-label">Quality Approval Rate</div>
+                <div class="score-description">Percentage of approvals that are full approvals</div>
+              </div>
+              
+              <div class="metrics-breakdown">
+                <div class="metric-row">
+                  <span class="metric-name">Total Approved</span>
+                  <span class="metric-value">{{ approvedSubmissions }}</span>
+                </div>
+                <div class="metric-row emerald-bg">
+                  <span class="metric-name">Full Implementation</span>
+                  <span class="metric-value">{{ fullyApprovedSubmissions }}</span>
+                </div>
+                <div class="metric-row orange-bg">
+                  <span class="metric-name">Conditional Implementation</span>
+                  <span class="metric-value">{{ partiallyApprovedSubmissions }}</span>
+                </div>
+              </div>
+              
+              <div class="trend-indicator">
+                <mat-icon>trending_up</mat-icon>
+                <span>Quality improving with {{ fullApprovalRate.toFixed(1) }}% full approvals</span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Submissions">
+      <div class="tab-content">
+        <!-- Content for Submissions tab -->
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Risk Analysis">
+      <div class="tab-content">
+        <!-- Content for Risk Analysis tab -->
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Performance">
+      <div class="tab-content">
+        <!-- Content for Performance tab -->
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Trends">
+      <div class="tab-content">
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>calendar_today</mat-icon>
+              Submission Trends
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="chart-container">
+              <canvas baseChart
+                      [data]="submissionChartData"
+                      [type]="'line'"
+                      [options]="{ responsive: true }">
+              </canvas>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

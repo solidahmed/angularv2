@@ -1,0 +1,67 @@
+.category-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.category-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.category-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.category-select {
+  flex: 1;
+}
+
+.library-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.add-category-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.category-input {
+  width: 100%;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

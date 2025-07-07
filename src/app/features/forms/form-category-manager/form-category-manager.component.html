@@ -1,0 +1,59 @@
+<div class="category-manager">
+  <div class="category-selector">
+    <label class="category-label">Category</label>
+    <div class="category-input-group">
+      <mat-form-field appearance="outline" class="category-select">
+        <mat-select 
+          [value]="selectedCategory" 
+          (selectionChange)="onCategoryChange($event.value)"
+          [disabled]="readOnly">
+          <mat-option *ngFor="let category of allCategories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <button 
+        mat-icon-button 
+        (click)="openAddCategoryDialog()"
+        [disabled]="readOnly"
+        matTooltip="Add new category">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <button 
+    mat-raised-button 
+    color="primary"
+    class="library-button"
+    (click)="onSaveToLibrary()"
+    [disabled]="!canSaveToLibrary || readOnly">
+    <mat-icon>library_books</mat-icon>
+    {{ readOnly ? "Published Form" : "Save to Library" }}
+  </button>
+  
+  <!-- Add Category Dialog -->
+  <mat-dialog-content *ngIf="isAddingCategory" class="add-category-dialog">
+    <h2 mat-dialog-title>Add New Category</h2>
+    
+    <div class="dialog-content">
+      <mat-form-field appearance="outline" class="category-input">
+        <mat-label>Category Name</mat-label>
+        <input matInput [formControl]="newCategoryControl" placeholder="Enter category name">
+        <mat-error *ngIf="newCategoryControl.hasError('required')">
+          Category name is required
+        </mat-error>
+      </mat-form-field>
+      
+      <div class="dialog-actions">
+        <button mat-raised-button color="primary" (click)="addNewCategory()" [disabled]="newCategoryControl.invalid">
+          Add Category
+        </button>
+        <button mat-button (click)="closeAddCategoryDialog()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

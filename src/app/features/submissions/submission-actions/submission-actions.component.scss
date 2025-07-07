@@ -1,0 +1,286 @@
+.actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.activity-card,
+.actions-card {
+  border-radius: 8px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+}
+
+.warning-icon {
+  color: #f97316;
+  animation: pulse 2s infinite;
+}
+
+.empty-log {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.empty-log mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  margin-bottom: 8px;
+  color: #d1d5db;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 256px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.activity-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activity-type {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.urgency-badge {
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.urgency-badge.high {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.urgency-badge.medium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.urgency-badge.low {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.activity-meta {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: right;
+}
+
+.activity-comments {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.activity-metadata {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.metadata-item {
+  margin: 4px 0;
+}
+
+.incomplete-warning {
+  color: #f97316;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.action-type-selector {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.action-type-selector button {
+  flex: 1;
+  border-radius: 4px;
+}
+
+.action-type-selector button.active {
+  background-color: #f3f4f6;
+  font-weight: 500;
+}
+
+.advanced-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.fields-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.fields-list {
+  max-height: 128px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.ai-suggestion {
+  padding: 16px;
+  background-color: #eff6ff;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.suggestion-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e40af;
+  margin: 0 0 8px 0;
+}
+
+.suggestion-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestion-text {
+  margin: 0;
+  font-size: 14px;
+  color: #1e40af;
+}
+
+.suggestion-value {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.suggestion-reason {
+  margin: 0;
+  font-size: 12px;
+  color: #3b82f6;
+}
+
+.suggestion-button {
+  align-self: flex-start;
+  font-size: 12px;
+}
+
+.approval-type {
+  margin-bottom: 16px;
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.option-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+}
+
+.option-icon.green {
+  color: #22c55e;
+}
+
+.option-icon.orange {
+  color: #f97316;
+}
+
+.approval-description {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 4px 0 0 0;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.approve-button {
+  animation: bounce 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .button-group button {
+    width: 100%;
+  }
+}

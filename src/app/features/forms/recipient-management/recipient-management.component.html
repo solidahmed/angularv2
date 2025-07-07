@@ -1,0 +1,80 @@
+<ng-container *ngIf="emailSettings.enabled">
+  <!-- Add Recipients -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Add Recipients</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="recipientForm" (ngSubmit)="addRecipient()" class="recipient-form">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Email Address *</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="user@example.com">
+            <mat-error *ngIf="recipientForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="recipientForm.get('email')?.hasError('email')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Name (Optional)</mat-label>
+            <input matInput formControlName="name" placeholder="John Doe">
+          </mat-form-field>
+          
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="recipientForm.invalid">
+              <mat-icon>add</mat-icon>
+              Add Recipient
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Recipients List -->
+  <mat-card *ngIf="emailSettings.recipients.length > 0">
+    <mat-card-header>
+      <div class="list-header">
+        <mat-card-title>Recipients ({{ emailSettings.recipients.length }})</mat-card-title>
+        
+        <button mat-raised-button color="primary" (click)="sendInvitations()">
+          <mat-icon>send</mat-icon>
+          Send Invitations
+        </button>
+      </div>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="recipients-list">
+        <div *ngFor="let recipient of emailSettings.recipients" class="recipient-item">
+          <div class="recipient-info">
+            <mat-icon [ngClass]="getStatusClass(recipient.status)">{{ getStatusIcon(recipient.status) }}</mat-icon>
+            
+            <div class="recipient-details">
+              <div class="recipient-name">{{ recipient.name || recipient.email }}</div>
+              <div *ngIf="recipient.name" class="recipient-email">{{ recipient.email }}</div>
+            </div>
+          </div>
+          
+          <div class="recipient-status">
+            <span class="status-badge" [ngClass]="getStatusClass(recipient.status)">
+              {{ recipient.status.charAt(0).toUpperCase() + recipient.status.slice(1) }}
+            </span>
+            
+            <span *ngIf="recipient.remindersSent > 0" class="reminders-badge">
+              {{ recipient.remindersSent }} reminders
+            </span>
+          </div>
+          
+          <button mat-icon-button (click)="removeRecipient(recipient.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

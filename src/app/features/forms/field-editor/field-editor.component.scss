@@ -1,0 +1,91 @@
+.field-editor-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.field-editor-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+}
+
+.read-only-label {
+  font-size: 14px;
+  font-weight: normal;
+  color: #6b7280;
+  margin-left: 8px;
+}
+
+.field-editor-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+.no-field-selected {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  text-align: center;
+  padding: 32px;
+}
+
+.field-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-checkbox {
+  margin: 8px 0;
+}
+
+.field-options {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.option-input {
+  flex: 1;
+}
+
+.add-option-button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.scoring-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.scoring-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.scoring-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.correct-answers {
+  margin-top: 8px;
+}

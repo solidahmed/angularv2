@@ -1,0 +1,41 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="card-title">
+      <mat-icon>people</mat-icon>
+      Invitation Statistics
+    </mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-value">{{ emailSettings.recipients.length }}</div>
+        <div class="stat-label">Total Invites</div>
+      </div>
+      
+      <div class="stat-card green">
+        <div class="stat-value">{{ completedCount }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      
+      <div class="stat-card yellow">
+        <div class="stat-value">{{ startedCount }}</div>
+        <div class="stat-label">Started</div>
+      </div>
+      
+      <div class="stat-card red">
+        <div class="stat-value">{{ notStartedCount }}</div>
+        <div class="stat-label">Not Started</div>
+      </div>
+    </div>
+    
+    <div class="completion-rate">
+      <div class="rate-header">
+        <span class="rate-label">Completion Rate:</span>
+        <span class="rate-value">{{ completionRate }}%</span>
+      </div>
+      
+      <mat-progress-bar [value]="completionRate"></mat-progress-bar>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,22 @@
+<mat-card class="submissions-list-card">
+  <mat-card-header>
+    <mat-card-title>Submissions ({{ submissions.length }})</mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content class="list-content">
+    <div *ngIf="submissions.length === 0" class="empty-list">
+      <mat-icon>filter_list</mat-icon>
+      <p>No submissions found</p>
+    </div>
+    
+    <div *ngIf="submissions.length > 0" class="submissions-container">
+      <app-submission-card
+        *ngFor="let submission of submissions"
+        [submission]="submission"
+        [form]="form"
+        [isSelected]="selectedSubmission?.id === submission.id"
+        (selectSubmission)="onSelectSubmission($event)">
+      </app-submission-card>
+    </div>
+  </mat-card-content>
+</mat-card>

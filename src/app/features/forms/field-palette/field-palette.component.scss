@@ -1,0 +1,30 @@
+.field-palette-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.field-palette-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.field-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  height: 48px;
+  cursor: grab;
+  
+  &:active {
+    cursor: grabbing;
+  }
+  
+  mat-icon {
+    margin-right: 8px;
+  }
+}

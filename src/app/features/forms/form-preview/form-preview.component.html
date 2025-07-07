@@ -1,0 +1,188 @@
+<div class="form-preview-container">
+  <!-- Expired Form Notice -->
+  <mat-card *ngIf="isExpired" class="expired-notice">
+    <mat-card-content>
+      <mat-icon class="expired-icon">error</mat-icon>
+      <h3 class="expired-title">Form Expired</h3>
+      <p class="expired-message">
+        {{ formSettings?.expiration?.message || "This form has expired and is no longer accepting submissions." }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Form Content -->
+  <mat-card *ngIf="!isExpired" class="form-card">
+    <mat-card-header>
+      <div class="form-header">
+        <div class="form-title-section">
+          <mat-card-title class="form-title">{{ formTitle || "Untitled Form" }}</mat-card-title>
+          <mat-card-subtitle *ngIf="formDescription" class="form-description">
+            {{ formDescription }}
+          </mat-card-subtitle>
+        </div>
+        
+        <div class="form-badges">
+          <div *ngIf="formSettings?.scoring?.enabled" class="form-badge">
+            <mat-icon>target</mat-icon>
+            Max: {{ totalPossiblePoints }} pts
+          </div>
+          
+          <div *ngIf="formSettings?.expiration?.enabled && formSettings.expiration.expirationDate" class="form-badge">
+            <mat-icon>schedule</mat-icon>
+            Expires: {{ formSettings.expiration.expirationDate | date }}
+          </div>
+        </div>
+      </div>
+    </mat-card-header>
+    
+    <mat-card-content class="form-content">
+      <!-- File Attachments Section -->
+      <div *ngIf="attachments.length > 0" class="attachments-section">
+        <h3 class="section-title">
+          <mat-icon>description</mat-icon>
+          Reference Documents
+        </h3>
+        <p class="section-description">
+          Download and review these documents before filling out the form:
+        </p>
+        
+        <div class="attachments-list">
+          <div *ngFor="let attachment of attachments" class="attachment-item">
+            <div class="attachment-info">
+              <mat-icon>description</mat-icon>
+              <div class="attachment-details">
+                <p class="attachment-name">{{ attachment.name }}</p>
+                <p class="attachment-size">{{ formatFileSize(attachment.size) }}</p>
+              </div>
+            </div>
+            
+            <button mat-stroked-button (click)="downloadFile(attachment)" class="download-button">
+              <mat-icon>download</mat-icon>
+              Download
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="form-fields">
+        <div *ngFor="let field of formFields" class="form-field">
+          <div class="field-header">
+            <label [for]="field.id" class="field-label">
+              {{ field.label }}
+              <span *ngIf="field.required" class="required-indicator">*</span>
+            </label>
+            
+            <div *ngIf="field.scoring?.enabled" class="field-scoring">
+              <div class="score-badge">
+                {{ (field.scoring.maxPoints || 10) * (field.scoring.weightMultiplier || 1) }} pts
+              </div>
+              
+              <div *ngIf="field.scoring.weightMultiplier && field.scoring.weightMultiplier > 1" class="weight-badge">
+                {{ field.scoring.weightMultiplier }}x
+              </div>
+              
+              <div *ngIf="field.scoring.requiresManualReview" class="review-badge">
+                Manual Review
+              </div>
+            </div>
+          </div>
+
+          <!-- Field Inputs -->
+          <div class="field-input">
+            <!-- Text, Email, Number -->
+            <input *ngIf="['text', 'email', 'number'].includes(field.type)"
+                   [type]="field.type"
+                   [id]="field.id"
+                   [placeholder]="field.placeholder"
+                   [required]="field.required"
+                   class="text-input">
+            
+            <!-- Textarea -->
+            <textarea *ngIf="field.type === 'textarea'"
+                      [id]="field.id"
+                      [placeholder]="field.placeholder"
+                      [required]="field.required"
+                      rows="3"
+                      class="textarea-input"></textarea>
+            
+            <!-- Select -->
+            <mat-form-field *ngIf="field.type === 'select'" appearance="outline" class="select-input">
+              <mat-select [required]="field.required">
+                <mat-option value="">Select an option</mat-option>
+                <mat-option *ngFor="let option of field.options" [value]="option">
+                  {{ option }}
+                  <span *ngIf="field.scoring?.correctAnswers?.includes(option)" class="correct-answer">✓</span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <!-- Radio -->
+            <mat-radio-group *ngIf="field.type === 'radio'" class="radio-group">
+              <mat-radio-button *ngFor="let option of field.options; let i = index" 
+                               [value]="option"
+                               [id]="field.id + '-' + i"
+                               disabled>
+                {{ option }}
+                <span *ngIf="field.scoring?.correctAnswers?.includes(option)" class="correct-answer">✓</span>
+              </mat-radio-button>
+            </mat-radio-group>
+            
+            <!-- Checkbox -->
+            <div *ngIf="field.type === 'checkbox'" class="checkbox-group">
+              <mat-checkbox *ngFor="let option of field.options; let i = index" 
+                           [id]="field.id + '-' + i">
+                {{ option }}
+                <span *ngIf="field.scoring?.correctAnswers?.includes(option)" class="correct-answer">✓</span>
+              </mat-checkbox>
+            </div>
+            
+            <!-- Date -->
+            <mat-form-field *ngIf="field.type === 'date'" appearance="outline" class="date-input">
+              <input matInput [matDatepicker]="picker" [required]="field.required">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            
+            <!-- File -->
+            <button *ngIf="field.type === 'file'" mat-stroked-button class="file-input">
+              <mat-icon>upload_file</mat-icon>
+              Choose File
+            </button>
+            
+            <!-- Rating -->
+            <div *ngIf="field.type === 'rating'" class="rating-input">
+              <button *ngFor="let star of [1, 2, 3, 4, 5]" mat-icon-button class="rating-star">
+                <mat-icon>star_border</mat-icon>
+              </button>
+            </div>
+            
+            <!-- Signature -->
+            <div *ngIf="field.type === 'signature'" class="signature-input">
+              <div class="signature-area">
+                <span>Click to sign</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Footer -->
+      <div *ngIf="formFields.length > 0" class="form-footer">
+        <div *ngIf="formSettings?.scoring?.enabled" class="scoring-notice">
+          <mat-icon>target</mat-icon>
+          <span>
+            This form will be scored out of {{ totalPossiblePoints }} points
+            <span *ngIf="formSettings.scoring.passingScore">
+              ({{ formSettings.scoring.passingScore }} points required to pass)
+            </span>
+          </span>
+        </div>
+        
+        <button mat-raised-button color="primary" class="submit-button">
+          Submit Form
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

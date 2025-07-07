@@ -1,0 +1,201 @@
+<div class="email-tracking-container">
+  <h1 class="page-title">Email Tracking & Distribution</h1>
+  
+  <!-- Stats Overview -->
+  <div class="stats-overview">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <mat-icon>people</mat-icon>
+          <div class="stat-info">
+            <p class="stat-label">Total Recipients</p>
+            <p class="stat-value">{{ recipients.length }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <mat-icon>send</mat-icon>
+          <div class="stat-info">
+            <p class="stat-label">Sent</p>
+            <p class="stat-value">
+              {{ recipients.filter(r => ['sent', 'opened', 'completed'].includes(r.status)).length }}
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <mat-icon>check_circle</mat-icon>
+          <div class="stat-info">
+            <p class="stat-label">Completed</p>
+            <p class="stat-value">
+              {{ recipients.filter(r => r.status === 'completed').length }}
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <mat-icon>error</mat-icon>
+          <div class="stat-info">
+            <p class="stat-label">Completion Rate</p>
+            <p class="stat-value">{{ completionRate }}%</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Email Settings -->
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Email Settings</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="emailSettingsForm" class="settings-form">
+        <div class="setting-row">
+          <mat-checkbox formControlName="reminderEnabled">Enable automatic reminders</mat-checkbox>
+        </div>
+        
+        <div *ngIf="emailSettingsForm.get('reminderEnabled')?.value" class="reminder-settings">
+          <div class="settings-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Reminder Interval (days)</mat-label>
+              <input matInput type="number" formControlName="reminderIntervalDays" min="1">
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Max Reminders</mat-label>
+              <input matInput type="number" formControlName="maxReminders" min="1" max="10">
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Custom Email Message (optional)</mat-label>
+          <textarea matInput formControlName="customMessage" rows="3" 
+                   placeholder="Add a personal message to include in the email..."></textarea>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Add Recipients -->
+  <mat-card class="recipients-card">
+    <mat-card-header>
+      <mat-card-title>Add Recipients</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="newRecipientForm" class="recipient-form">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="vendor@example.com">
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Name (optional)</mat-label>
+            <input matInput formControlName="name" placeholder="Vendor Name">
+          </mat-form-field>
+          
+          <div class="form-actions">
+            <button mat-raised-button color="primary" (click)="addRecipient()">
+              <mat-icon>add</mat-icon>
+              Add Recipient
+            </button>
+          </div>
+        </div>
+      </form>
+      
+      <div class="bulk-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Bulk Add (one email per line)</mat-label>
+          <textarea matInput [(ngModel)]="bulkEmails" rows="4" 
+                   placeholder="vendor1@example.com
+vendor2@example.com
+vendor3@example.com"></textarea>
+        </mat-form-field>
+        
+        <button mat-raised-button (click)="addBulkRecipients()">
+          Add All Emails
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Recipients List -->
+  <mat-card class="recipients-list-card">
+    <mat-card-header>
+      <div class="list-header">
+        <mat-card-title>Recipients ({{ recipients.length }})</mat-card-title>
+        
+        <div class="list-actions">
+          <button mat-stroked-button (click)="sendReminders()">
+            <mat-icon>refresh</mat-icon>
+            Send Reminders
+          </button>
+          
+          <button mat-raised-button color="primary" (click)="sendToAll()">
+            <mat-icon>send</mat-icon>
+            Send to All
+          </button>
+        </div>
+      </div>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="recipients.length === 0" class="empty-list">
+        <p>No recipients added yet. Add email addresses above to get started.</p>
+      </div>
+      
+      <div *ngIf="recipients.length > 0" class="recipients-list">
+        <div *ngFor="let recipient of recipients" class="recipient-item">
+          <div class="recipient-info">
+            <mat-icon [ngClass]="getStatusClass(recipient.status)">{{ getStatusIcon(recipient.status) }}</mat-icon>
+            
+            <div class="recipient-details">
+              <p class="recipient-email">{{ recipient.email }}</p>
+              <p *ngIf="recipient.name" class="recipient-name">{{ recipient.name }}</p>
+              
+              <div class="recipient-badges">
+                <span class="status-badge" [ngClass]="getStatusClass(recipient.status)">
+                  {{ recipient.status.charAt(0).toUpperCase() + recipient.status.slice(1) }}
+                </span>
+                
+                <span *ngIf="recipient.remindersSent > 0" class="reminders-badge">
+                  {{ recipient.remindersSent }} reminder{{ recipient.remindersSent > 1 ? 's' : '' }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="recipient-dates">
+            <div *ngIf="recipient.sentAt" class="date-info">
+              Sent: {{ recipient.sentAt | date }}
+            </div>
+            
+            <div *ngIf="recipient.completedAt" class="date-info completed">
+              Completed: {{ recipient.completedAt | date }}
+            </div>
+          </div>
+          
+          <button mat-icon-button (click)="removeRecipient(recipient.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

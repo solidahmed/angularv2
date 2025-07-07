@@ -1,0 +1,46 @@
+@@ .. @@
+-<div class="filter-container">
+-  <button 
+-    mat-button 
+-    class="filter-button" 
+-    [matMenuTriggerFor]="menu"
+-    aria-haspopup="true"
+-    [attr.aria-expanded]="isOpen"
+-    (click)="isOpen = !isOpen">
+-    <div class="filter-content">
+-      <span *ngIf="selectedValues.length === 0" class="placeholder">{{ placeholder }}</span>
+-      <span *ngIf="selectedValues.length > 0" class="selected-text">{{ getDisplayText() }}</span>
+-      
+-      <div *ngIf="selectedValues.length > 1" class="selected-chips">
+-        <mat-chip-set>
+-          <mat-chip 
+-            *ngFor="let value of selectedValues.slice(0, 2)" 
+-            [removable]="true" 
+-            (removed)="removeValue(value, $event)">
+-            {{ formatOptionLabel(value) }}
+-            <mat-icon matChipRemove>cancel</mat-icon>
+-          </mat-chip>
+-          <mat-chip *ngIf="selectedValues.length > 2">
+-            +{{ selectedValues.length - 2 }} more
+-          </mat-chip>
+-        </mat-chip-set>
+-      </div>
+-    </div>
+-    <mat-icon>arrow_drop_down</mat-icon>
+-  </button>
+-
+-  <mat-menu #menu="matMenu" class="filter-menu" [hasBackdrop]="true">
+-    <div class="menu-content" (click)="$event.stopPropagation()">
+-      <div *ngFor="let option of options" class="option-item">
+-        <mat-checkbox
+-          [checked]="option === 'all' ? selectedValues.length === 0 : selectedValues.includes(option)"
+-          (change)="toggleValue(option)">
+-          {{ formatOptionLabel(option) }}
+-          <span *ngIf="showCounts && getCounts" class="count">({{ getCounts(option) }})</span>
+-        </mat-checkbox>
+-      </div>
+-    </div>
+-  </mat-menu>
+-</div>
++<!-- This component has been moved to the forms feature module -->
++<!-- Import from @app/features/forms/components/multi-select-filter/multi-select-filter.component -->

@@ -1,0 +1,74 @@
+.invitations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.invitations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.invitations-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.invitations-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.status-badge {
+  background-color: #dcfce7;
+  color: #166534;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tab-content {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.unpublished-notice {
+  padding: 24px 0;
+}
+
+.notice-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.notice-message {
+  color: #6b7280;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.notice-note {
+  color: #3b82f6;
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .invitations-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .status-badge {
+    align-self: flex-start;
+  }
+}

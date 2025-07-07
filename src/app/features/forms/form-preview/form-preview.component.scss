@@ -1,0 +1,307 @@
+.form-preview-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.expired-notice {
+  border-color: #fecaca;
+  background-color: #fee2e2;
+  text-align: center;
+  padding: 32px;
+}
+
+.expired-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  color: #ef4444;
+  margin-bottom: 16px;
+}
+
+.expired-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #b91c1c;
+  margin-bottom: 8px;
+}
+
+.expired-message {
+  color: #ef4444;
+}
+
+.form-card {
+  border-radius: 8px;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.form-title-section {
+  flex: 1;
+}
+
+.form-title {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.form-description {
+  color: #6b7280;
+}
+
+.form-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.form-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.attachments-section {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  padding-bottom: 24px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.attachments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.attachment-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.attachment-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.attachment-name {
+  font-weight: 500;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attachment-size {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.download-button {
+  white-space: nowrap;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field-label {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.required-indicator {
+  color: #ef4444;
+}
+
+.field-scoring {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-badge,
+.weight-badge,
+.review-badge {
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.score-badge {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.weight-badge {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.review-badge {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.field-input {
+  width: 100%;
+}
+
+.text-input,
+.textarea-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.textarea-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.select-input,
+.date-input {
+  width: 100%;
+}
+
+.radio-group,
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-input {
+  width: 100%;
+}
+
+.rating-input {
+  display: flex;
+  gap: 4px;
+}
+
+.rating-star {
+  color: #d1d5db;
+}
+
+.signature-area {
+  width: 100%;
+  height: 120px;
+  border: 2px dashed #d1d5db;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+
+.correct-answer {
+  color: #22c55e;
+  margin-left: 4px;
+  font-size: 12px;
+}
+
+.form-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.scoring-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background-color: #e0f2fe;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #0284c7;
+}
+
+.submit-button {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .form-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .form-badges {
+    flex-direction: row;
+    margin-left: 0;
+  }
+  
+  .attachment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .download-button {
+    width: 100%;
+  }
+}

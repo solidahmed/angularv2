@@ -1,0 +1,160 @@
+<div class="sharing-container">
+  <!-- Public Link Sharing -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="card-title">
+        <mat-icon>public</mat-icon>
+        Public Link Sharing
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="url-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Form URL</mat-label>
+          <input matInput [value]="generateFormUrl()" readonly>
+        </mat-form-field>
+        
+        <div class="url-actions">
+          <button mat-stroked-button (click)="copyToClipboard(generateFormUrl(), 'Form URL')">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          
+          <button mat-stroked-button (click)="openInNewTab(generateFormUrl())">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </div>
+      </div>
+      
+      <div class="sharing-tips">
+        <h4 class="tips-title">Sharing Tips</h4>
+        <ul class="tips-list">
+          <li>• Share this link directly with respondents</li>
+          <li>• Post on social media or websites</li>
+          <li>• Include in emails or documents</li>
+          <li>• Generate QR codes for physical materials</li>
+        </ul>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Embed Code -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="card-title">
+        <mat-icon>code</mat-icon>
+        Embed on Website
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="embed-options">
+        <h4 class="options-title">Embed Options</h4>
+        
+        <div class="options-buttons">
+          <button mat-stroked-button (click)="copyToClipboard(generateEmbedCode('100%', '600px'), 'Desktop embed code')">
+            <mat-icon>desktop_windows</mat-icon>
+            Desktop
+          </button>
+          
+          <button mat-stroked-button (click)="copyToClipboard(generateEmbedCode('100%', '500px'), 'Tablet embed code')">
+            <mat-icon>tablet</mat-icon>
+            Tablet
+          </button>
+          
+          <button mat-stroked-button (click)="copyToClipboard(generateResponsiveEmbedCode(), 'Responsive embed code')">
+            <mat-icon>smartphone</mat-icon>
+            Responsive
+          </button>
+        </div>
+      </div>
+      
+      <div class="embed-code">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>HTML Embed Code</mat-label>
+          <textarea matInput [value]="generateEmbedCode()" rows="4" readonly class="code-textarea"></textarea>
+        </mat-form-field>
+        
+        <button mat-stroked-button (click)="copyToClipboard(generateEmbedCode(), 'Embed code')">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+      
+      <div class="embedding-guide">
+        <h4 class="guide-title">Embedding Guide</h4>
+        <ul class="guide-list">
+          <li>• Copy the HTML code above</li>
+          <li>• Paste it into your website's HTML</li>
+          <li>• Adjust width and height as needed</li>
+          <li>• Test the embedded form on your site</li>
+        </ul>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- PDF Export -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="card-title">
+        <mat-icon>file_download</mat-icon>
+        Export Options
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="export-section">
+        <h4 class="export-title">Export Form as PDF</h4>
+        <p class="export-description">
+          Generate a fillable PDF version of your form for offline use or printing.
+        </p>
+        
+        <button mat-raised-button color="primary" (click)="exportToPDF()" class="export-button">
+          <mat-icon>file_download</mat-icon>
+          Download Fillable PDF
+        </button>
+      </div>
+      
+      <div class="pdf-features">
+        <h4 class="features-title">PDF Features</h4>
+        <ul class="features-list">
+          <li>• Fillable form fields for all input types</li>
+          <li>• Proper field labels and descriptions</li>
+          <li>• Required field indicators (*)</li>
+          <li>• Form submission instructions included</li>
+          <li>• Professional formatting and layout</li>
+        </ul>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Form Analytics Preview -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Sharing Analytics</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="analytics-grid">
+        <div class="analytics-item">
+          <div class="analytics-value">{{ form.analytics.views }}</div>
+          <div class="analytics-label">Total Views</div>
+        </div>
+        
+        <div class="analytics-item">
+          <div class="analytics-value">{{ form.analytics.submissions }}</div>
+          <div class="analytics-label">Submissions</div>
+        </div>
+        
+        <div class="analytics-item">
+          <div class="analytics-value">{{ form.analytics.emailsSent }}</div>
+          <div class="analytics-label">Emails Sent</div>
+        </div>
+        
+        <div class="analytics-item">
+          <div class="analytics-value">{{ form.analytics.completionRate }}%</div>
+          <div class="analytics-label">Completion Rate</div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

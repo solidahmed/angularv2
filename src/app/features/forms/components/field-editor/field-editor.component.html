@@ -1,0 +1,35 @@
+@@ .. @@
+       <div class="form-field">
+         <mat-form-field appearance="outline">
+           <mat-label>Label</mat-label>
+-          <input matInput [formControl]="form.get('label')" [readonly]="readOnly">
++          <input matInput [formControl]="form.get('label')" [readonly]="readOnly" [disabled]="readOnly">
+         </mat-form-field>
+       </div>
+ 
+       <div class="form-field">
+         <mat-form-field appearance="outline">
+           <mat-label>Placeholder</mat-label>
+-          <input matInput [formControl]="form.get('placeholder')" [readonly]="readOnly">
++          <input matInput [formControl]="form.get('placeholder')" [readonly]="readOnly" [disabled]="readOnly">
+         </mat-form-field>
+       </div>
+ 
+@@ .. @@
+       <div class="form-field" *ngIf="form.get('scoring.enabled')?.value">
+         <mat-form-field appearance="outline">
+           <mat-label>Maximum Points</mat-label>
+-          <input matInput type="number" [formControl]="form.get('scoring.maxPoints')" [readonly]="readOnly">
++          <input matInput type="number" [formControl]="form.get('scoring.maxPoints')" [readonly]="readOnly" [disabled]="readOnly">
+         </mat-form-field>
+       </div>
+ 
+@@ .. @@
+       <div class="form-field">
+         <mat-form-field appearance="outline">
+           <mat-label>Validation Message</mat-label>
+-          <textarea matInput [formControl]="form.get('validation.message')" [readonly]="readOnly" rows="2"></textarea>
++          <textarea matInput [formControl]="form.get('validation.message')" [readonly]="readOnly" [disabled]="readOnly" rows="2"></textarea>
+         </mat-form-field>
+       </div>
+     </form>

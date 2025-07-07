@@ -1,0 +1,186 @@
+.submission-review-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-field {
+  width: 100%;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-count {
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.advanced-filters {
+  margin-top: 8px;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  padding: 16px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.filter-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+}
+
+.risk-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.risk-dot.low {
+  background-color: #22c55e;
+}
+
+.risk-dot.medium {
+  background-color: #f59e0b;
+}
+
+.risk-dot.high {
+  background-color: #f97316;
+}
+
+.risk-dot.critical {
+  background-color: #ef4444;
+}
+
+.sort-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.mt-4 {
+  margin-top: 16px;
+}
+
+.review-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+  height: calc(100vh - 300px);
+}
+
+.submissions-list,
+.submission-details {
+  overflow: hidden;
+}
+
+.details-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-label {
+  display: none;
+}
+
+.details-content {
+  overflow: auto;
+  padding: 16px;
+}
+
+.empty-details {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-details mat-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #6b7280;
+}
+
+.empty-details mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+  color: #d1d5db;
+}
+
+@media (min-width: 768px) {
+  .action-label {
+    display: inline;
+    margin-left: 4px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .review-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  
+  .submissions-list,
+  .submission-details {
+    max-height: 50vh;
+  }
+}

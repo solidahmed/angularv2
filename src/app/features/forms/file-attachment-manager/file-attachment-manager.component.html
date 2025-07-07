@@ -1,0 +1,74 @@
+<mat-card class="attachment-card">
+  <mat-card-header>
+    <mat-card-title class="attachment-title">
+      <mat-icon *ngIf="readOnly">lock</mat-icon>
+      <mat-icon>attach_file</mat-icon>
+      File Attachments
+      <span *ngIf="readOnly" class="read-only-badge">Read Only</span>
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{ readOnly 
+        ? "View attached files. Move form to draft to make changes."
+        : "Attach files that form users can download and view. Allowed types: " + allowedTypes.join(', ') + " | Max size: " + maxSize + "MB per file"
+      }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content class="attachment-content">
+    <!-- File Upload Section -->
+    <div *ngIf="!readOnly" class="upload-section">
+      <label for="file-upload" class="upload-label">Upload Files</label>
+      <div class="upload-input-container">
+        <input
+          type="file"
+          id="file-upload"
+          multiple
+          (change)="handleFileUpload($event)"
+          [disabled]="uploading"
+          [accept]="allowedTypes.map(type => '.' + type).join(',')"
+          class="upload-input"
+        />
+      </div>
+    </div>
+    
+    <!-- Uploaded Files List -->
+    <div *ngIf="attachments.length > 0" class="files-list">
+      <h3 class="files-heading">Uploaded Files</h3>
+      
+      <div *ngFor="let attachment of attachments" class="file-item">
+        <div class="file-info">
+          <mat-icon class="file-icon">description</mat-icon>
+          <div class="file-details">
+            <p class="file-name">{{ attachment.name }}</p>
+            <div class="file-meta">
+              <span class="file-size">{{ formatFileSize(attachment.size) }}</span>
+              <span class="file-type">{{ attachment.type }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="file-actions">
+          <button mat-icon-button (click)="downloadFile(attachment)" matTooltip="Download file">
+            <mat-icon>download</mat-icon>
+          </button>
+          
+          <button mat-icon-button *ngIf="!readOnly" (click)="removeAttachment(attachment.id)" matTooltip="Remove file">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Upload Progress -->
+    <div *ngIf="uploading" class="upload-progress">
+      <mat-icon class="upload-icon">cloud_upload</mat-icon>
+      <span>Uploading files...</span>
+    </div>
+    
+    <!-- Empty State -->
+    <div *ngIf="readOnly && attachments.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">description</mat-icon>
+      <p>No files attached to this form</p>
+    </div>
+  </mat-card-content>
+</mat-card>

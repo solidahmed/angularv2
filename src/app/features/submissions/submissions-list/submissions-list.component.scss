@@ -1,0 +1,36 @@
+.submissions-list-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+  text-align: center;
+  padding: 32px;
+}
+
+.empty-list mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  margin-bottom: 16px;
+  color: #d1d5db;
+}
+
+.submissions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

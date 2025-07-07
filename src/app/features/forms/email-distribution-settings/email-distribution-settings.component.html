@@ -1,0 +1,51 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="card-title">
+      <mat-icon>people</mat-icon>
+      Email Distribution Settings
+    </mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div class="setting-row">
+      <mat-slide-toggle
+        [checked]="emailSettings.enabled"
+        (change)="updateEmailSettings({ enabled: $event.checked })">
+        Enable email distribution
+      </mat-slide-toggle>
+    </div>
+    
+    <div *ngIf="emailSettings.enabled" class="email-settings">
+      <div class="settings-grid">
+        <div class="setting-item">
+          <mat-label>Enable Reminders</mat-label>
+          <div class="reminder-toggle">
+            <mat-slide-toggle
+              [checked]="emailSettings.reminderEnabled"
+              (change)="updateEmailSettings({ reminderEnabled: $event.checked })">
+              Send reminder emails
+            </mat-slide-toggle>
+          </div>
+        </div>
+        
+        <div class="setting-item">
+          <mat-form-field appearance="outline">
+            <mat-label>Reminder Interval (days)</mat-label>
+            <input matInput type="number" min="1" max="30"
+                   [value]="emailSettings.reminderIntervalDays"
+                   (change)="updateEmailSettings({ reminderIntervalDays: parseInt($event.target.value) || 7 })">
+          </mat-form-field>
+        </div>
+      </div>
+      
+      <div class="max-reminders">
+        <mat-form-field appearance="outline">
+          <mat-label>Maximum Reminders</mat-label>
+          <input matInput type="number" min="0" max="10"
+                 [value]="emailSettings.maxReminders"
+                 (change)="updateEmailSettings({ maxReminders: $event.target.value })">
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

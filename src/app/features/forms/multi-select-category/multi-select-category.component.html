@@ -1,0 +1,35 @@
+<div class="multi-select-container">
+  <label class="select-label">Categories</label>
+  
+  <div class="select-trigger" [class.disabled]="disabled" (click)="panelOpen = !panelOpen">
+    <div class="selected-values">
+      <ng-container *ngIf="selectedCategories.length === 0">
+        <span class="placeholder">Select categories...</span>
+      </ng-container>
+      
+      <ng-container *ngIf="selectedCategories.length > 0">
+        <div class="selected-badges">
+          <div *ngFor="let category of selectedCategories" class="badge">
+            {{ formatCategoryLabel(category) }}
+            <button class="badge-remove" (click)="removeCategory(category, $event)" [disabled]="disabled">×</button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    
+    <mat-icon>{{ panelOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+  </div>
+  
+  <div class="select-panel" *ngIf="panelOpen">
+    <div class="panel-content">
+      <div *ngFor="let category of categoryOptions" class="option-item">
+        <mat-checkbox 
+          [checked]="selectedCategories.includes(category)"
+          (change)="toggleCategory(category)"
+          [disabled]="disabled">
+          {{ formatCategoryLabel(category) }}
+        </mat-checkbox>
+      </div>
+    </div>
+  </div>
+</div>

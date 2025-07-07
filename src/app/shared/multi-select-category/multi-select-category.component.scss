@@ -1,0 +1,117 @@
+.multi-select-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.select-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  
+  &:hover:not(.disabled) {
+    border-color: rgba(0, 0, 0, 0.42);
+  }
+  
+  &:focus, &:active {
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+  }
+  
+  &.disabled {
+    background-color: rgba(0, 0, 0, 0.04);
+    cursor: not-allowed;
+  }
+}
+
+.selected-values {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+}
+
+.placeholder {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+.selected-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.badge-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.select-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin-top: 4px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.panel-content {
+  padding: 8px;
+}
+
+.option-item {
+  padding: 8px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}

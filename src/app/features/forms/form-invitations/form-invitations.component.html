@@ -1,0 +1,39 @@
+<div class="invitations-container">
+  <div class="invitations-header">
+    <div>
+      <h2 class="invitations-title">Form Invitations & Sharing</h2>
+      <p class="invitations-subtitle">Manage email invitations and sharing options for your published form</p>
+    </div>
+    
+    <div class="status-badge">
+      Published Form
+    </div>
+  </div>
+
+  <mat-tab-group [(selectedIndex)]="activeTab === 'invite' ? 0 : 1" (selectedIndexChange)="setActiveTab($event === 0 ? 'invite' : 'share')">
+    <mat-tab label="Invitations">
+      <div class="tab-content" *ngIf="form.status === 'published'">
+        <app-form-invitation-statistics [form]="form"></app-form-invitation-statistics>
+        <app-email-distribution-settings [form]="form" (updateForm)="updateForm.emit($event)"></app-email-distribution-settings>
+        <app-recipient-management [form]="form" (updateForm)="updateForm.emit($event)"></app-recipient-management>
+        <app-email-template-customization [form]="form"></app-email-template-customization>
+      </div>
+      
+      <div *ngIf="form.status !== 'published'" class="unpublished-notice">
+        <mat-card>
+          <mat-card-content>
+            <h3 class="notice-title">Invitations Available for Published Forms Only</h3>
+            <p class="notice-message">Publish your form to enable email invitations and track recipient responses.</p>
+            <p class="notice-note">Note: All invitation data will be preserved when switching between draft and published states.</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Share & Embed">
+      <div class="tab-content">
+        <app-form-sharing-options [form]="form"></app-form-sharing-options>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,151 @@
+.recipient-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.form-actions {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.recipients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recipient-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.recipient-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.recipient-info mat-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.recipient-info mat-icon.pending {
+  color: #f59e0b;
+}
+
+.recipient-info mat-icon.sent {
+  color: #3b82f6;
+}
+
+.recipient-info mat-icon.opened {
+  color: #8b5cf6;
+}
+
+.recipient-info mat-icon.completed {
+  color: #22c55e;
+}
+
+.recipient-info mat-icon.expired {
+  color: #ef4444;
+}
+
+.recipient-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipient-name {
+  font-weight: 500;
+}
+
+.recipient-email {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.recipient-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.status-badge.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.sent {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.opened {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+}
+
+.status-badge.completed {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.expired {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.reminders-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .recipient-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .recipient-status {
+    margin-left: 32px;
+  }
+}

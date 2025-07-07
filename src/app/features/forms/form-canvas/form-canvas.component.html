@@ -1,0 +1,129 @@
+<div class="form-canvas"
+     [class.drag-over]="isDragOver && !readOnly"
+     (dragover)="onDragOver($event)"
+     (dragleave)="onDragLeave($event)"
+     (drop)="onDrop($event)">
+  
+  <!-- Empty State -->
+  <div *ngIf="fields.length === 0" class="empty-canvas">
+    <div *ngIf="readOnly" class="empty-published">
+      <mat-icon>lock</mat-icon>
+      <p class="empty-title">Published Form</p>
+      <p class="empty-subtitle">No fields to display</p>
+    </div>
+    
+    <div *ngIf="!readOnly" class="empty-draft">
+      <p class="empty-title">No fields added yet</p>
+      <p class="empty-subtitle">Drag fields from the palette to start building your form</p>
+    </div>
+  </div>
+  
+  <!-- Field List -->
+  <div cdkDropList 
+       [cdkDropListDisabled]="readOnly"
+       (cdkDropListDropped)="onDrop2($event)"
+       class="field-list">
+    
+    <mat-card *ngFor="let field of fields; let i = index" 
+              cdkDrag
+              [cdkDragDisabled]="readOnly"
+              class="field-card"
+              [class.selected]="selectedField?.id === field.id"
+              [class.drag-over-target]="dragOverIndex === i && !readOnly"
+              (click)="onFieldClick(field.id, $event)"
+              draggable="!readOnly"
+              (dragstart)="onFieldDragStart($event, field.id)"
+              (dragover)="onFieldDragOver($event, i)">
+      
+      <div class="field-header">
+        <div class="field-label">
+          <mat-icon *ngIf="readOnly" class="field-icon">lock</mat-icon>
+          <mat-icon *ngIf="!readOnly" cdkDragHandle class="field-icon drag-handle">drag_indicator</mat-icon>
+          <span>{{ field.label }}</span>
+          <span *ngIf="field.required" class="required-indicator">*</span>
+        </div>
+        
+        <div class="field-actions">
+          <button mat-icon-button (click)="onEditField(field.id, $event)" [disabled]="readOnly">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onRemoveField(field.id, $event)" [disabled]="readOnly">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Field Preview -->
+      <div class="field-preview">
+        <!-- Text, Email, Number -->
+        <input *ngIf="['text', 'email', 'number'].includes(field.type)"
+               [type]="field.type"
+               [placeholder]="field.placeholder || 'Enter ' + field.type"
+               class="preview-input"
+               disabled>
+        
+        <!-- Textarea -->
+        <textarea *ngIf="field.type === 'textarea'"
+                  [placeholder]="field.placeholder || 'Enter text'"
+                  class="preview-textarea"
+                  rows="3"
+                  disabled></textarea>
+        
+        <!-- Select -->
+        <mat-form-field *ngIf="field.type === 'select'" appearance="outline" class="preview-select">
+          <mat-select disabled>
+            <mat-option>Select an option</mat-option>
+            <mat-option *ngFor="let option of field.options" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <!-- Radio -->
+        <div *ngIf="field.type === 'radio'" class="preview-radio">
+          <mat-radio-group disabled>
+            <mat-radio-button *ngFor="let option of field.options; let i = index" 
+                             [value]="option" 
+                             [id]="field.id + '-' + i"
+                             disabled>
+              {{ option }}
+              <span *ngIf="field.scoring?.correctAnswers?.includes(option)" class="correct-answer">✓</span>
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        
+        <!-- Checkbox -->
+        <div *ngIf="field.type === 'checkbox'" class="preview-checkbox">
+          <mat-checkbox *ngFor="let option of field.options" disabled>
+            {{ option }}
+          </mat-checkbox>
+        </div>
+        
+        <!-- Date -->
+        <mat-form-field *ngIf="field.type === 'date'" appearance="outline" class="preview-date">
+          <input matInput [matDatepicker]="picker" disabled>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker disabled="true"></mat-datepicker>
+        </mat-form-field>
+        
+        <!-- File -->
+        <button *ngIf="field.type === 'file'" mat-stroked-button disabled class="preview-file">
+          <mat-icon>upload_file</mat-icon>
+          Choose File
+        </button>
+        
+        <!-- Rating -->
+        <div *ngIf="field.type === 'rating'" class="preview-rating">
+          <mat-icon *ngFor="let i of [1, 2, 3, 4, 5]" class="rating-star">star_border</mat-icon>
+        </div>
+        
+        <!-- Signature -->
+        <div *ngIf="field.type === 'signature'" class="preview-signature">
+          <div class="signature-area">
+            <span>Signature Area</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

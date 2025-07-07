@@ -1,0 +1,187 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Report Customization</mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <form [formGroup]="reportForm" class="report-form">
+      <!-- Basic Information -->
+      <div class="form-section">
+        <h3 class="section-title">Basic Information</h3>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Report Title</mat-label>
+          <input matInput formControlName="title">
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+      
+      <!-- Chart Options -->
+      <div class="form-section">
+        <h3 class="section-title">Chart Options</h3>
+        
+        <div class="checkbox-field">
+          <mat-checkbox formControlName="includeCharts">Include Charts in Report</mat-checkbox>
+        </div>
+        
+        <div *ngIf="reportForm.get('includeCharts')?.value" class="chart-options" formGroupName="chartTypes">
+          <div class="chart-option">
+            <h4 class="option-title">Submission Trends</h4>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="submissionTrends">
+                <mat-option value="bar">Bar Chart</mat-option>
+                <mat-option value="line">Line Chart</mat-option>
+                <mat-option value="pie">Pie Chart</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div class="chart-option">
+            <h4 class="option-title">Risk Distribution</h4>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="riskDistribution">
+                <mat-option value="bar">Bar Chart</mat-option>
+                <mat-option value="pie">Pie Chart</mat-option>
+                <mat-option value="donut">Donut Chart</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div class="chart-option">
+            <h4 class="option-title">Compliance Status</h4>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="complianceStatus">
+                <mat-option value="bar">Bar Chart</mat-option>
+                <mat-option value="pie">Pie Chart</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Report Sections -->
+      <div class="form-section" formGroupName="includeSections">
+        <h3 class="section-title">Include Sections</h3>
+        
+        <div class="sections-grid">
+          <div class="checkbox-field">
+            <mat-checkbox formControlName="overview">Overview</mat-checkbox>
+          </div>
+          
+          <div class="checkbox-field">
+            <mat-checkbox formControlName="submissionStats">Submission Stats</mat-checkbox>
+          </div>
+          
+          <div class="checkbox-field">
+            <mat-checkbox formControlName="riskAnalysis">Risk Analysis</mat-checkbox>
+          </div>
+          
+          <div class="checkbox-field">
+            <mat-checkbox formControlName="complianceStatus">Compliance Status</mat-checkbox>
+          </div>
+          
+          <div class="checkbox-field">
+            <mat-checkbox formControlName="detailedResponses">Detailed Responses</mat-checkbox>
+          </div>
+          
+          <div class="checkbox-field">
+            <mat-checkbox formControlName="recommendations">Recommendations</mat-checkbox>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filters -->
+      <div class="form-section" formGroupName="filterBy">
+        <h3 class="section-title">Filters</h3>
+        
+        <div class="filters-grid">
+          <div formGroupName="dateRange" class="date-range">
+            <h4 class="option-title">Date Range</h4>
+            <div class="date-inputs">
+              <mat-form-field appearance="outline">
+                <mat-label>Start Date</mat-label>
+                <input matInput [matDatepicker]="startPicker" formControlName="start">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>End Date</mat-label>
+                <input matInput [matDatepicker]="endPicker" formControlName="end">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="filter-option">
+            <h4 class="option-title">Submission Type</h4>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="submissionType">
+                <mat-option value="all">All</mat-option>
+                <mat-option value="vendor">Vendor</mat-option>
+                <mat-option value="internal">Internal</mat-option>
+                <mat-option value="external">External</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div class="filter-option">
+            <h4 class="option-title">Status</h4>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="status">
+                <mat-option value="all">All</mat-option>
+                <mat-option value="submitted">Submitted</mat-option>
+                <mat-option value="under_review">Under Review</mat-option>
+                <mat-option value="approved">Approved</mat-option>
+                <mat-option value="rejected">Rejected</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div class="filter-option">
+            <h4 class="option-title">Risk Level</h4>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="riskLevel">
+                <mat-option value="all">All</mat-option>
+                <mat-option value="low">Low</mat-option>
+                <mat-option value="medium">Medium</mat-option>
+                <mat-option value="high">High</mat-option>
+                <mat-option value="critical">Critical</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div class="filter-option">
+            <h4 class="option-title">Export Format</h4>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="format">
+                <mat-option value="pdf">PDF</mat-option>
+                <mat-option value="excel">Excel</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Custom Recommendations -->
+      <div class="form-section">
+        <h3 class="section-title">Custom Recommendations</h3>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea matInput formControlName="customRecommendations" rows="4" 
+                   placeholder="Add custom recommendations for this report..."></textarea>
+        </mat-form-field>
+      </div>
+      
+      <button mat-raised-button color="primary" (click)="onGenerateReport()" class="generate-button">
+        Generate {{ reportForm.get('format')?.value.toUpperCase() }} Report
+        <span *ngIf="reportForm.get('includeCharts')?.value">(with Charts)</span>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

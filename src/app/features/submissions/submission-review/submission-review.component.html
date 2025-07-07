@@ -1,0 +1,233 @@
+<div class="submission-review-container">
+  <!-- Header with Search and Filters -->
+  <div class="review-header">
+    <h1 class="review-title">Submissions ({{ filteredSubmissions.length }})</h1>
+    
+    <!-- Search Bar -->
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput [formControl]="filterForm.get('searchTerm')" placeholder="Search by company, submitter, or email...">
+      </mat-form-field>
+    </div>
+    
+    <!-- Filter Controls -->
+    <div class="filter-controls">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="filterForm.get('status')">
+          <mat-option value="all">All Status</mat-option>
+          <mat-option value="submitted">New</mat-option>
+          <mat-option value="under_review">Review</mat-option>
+          <mat-option value="approved">Approved</mat-option>
+          <mat-option value="rejected">Rejected</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <button mat-stroked-button (click)="toggleAdvancedFilters()">
+        <mat-icon>more_horiz</mat-icon>
+        Advanced Filters
+        <span *ngIf="getActiveFiltersCount() > 0" class="filter-count">({{ getActiveFiltersCount() }})</span>
+      </button>
+      
+      <button mat-stroked-button *ngIf="getActiveFiltersCount() > 0" (click)="clearFilters()">
+        <mat-icon>close</mat-icon>
+        Clear Filters ({{ getActiveFiltersCount() }})
+      </button>
+    </div>
+    
+    <!-- Advanced Filters -->
+    <mat-expansion-panel [expanded]="showAdvancedFilters" class="advanced-filters">
+      <div class="filter-grid">
+        <!-- Status Filter -->
+        <div class="filter-group">
+          <h3 class="filter-title">Status</h3>
+          <div class="filter-options">
+            <mat-checkbox [checked]="filterForm.get('status')?.value === 'submitted'"
+                         (change)="filterForm.get('status')?.setValue($event.checked ? 'submitted' : 'all')">
+              <div class="filter-option">
+                <mat-icon class="filter-icon">description</mat-icon>
+                <span>Submitted</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox [checked]="filterForm.get('status')?.value === 'under_review'"
+                         (change)="filterForm.get('status')?.setValue($event.checked ? 'under_review' : 'all')">
+              <div class="filter-option">
+                <mat-icon class="filter-icon">schedule</mat-icon>
+                <span>Review</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox [checked]="filterForm.get('status')?.value === 'approved'"
+                         (change)="filterForm.get('status')?.setValue($event.checked ? 'approved' : 'all')">
+              <div class="filter-option">
+                <mat-icon class="filter-icon">check_circle</mat-icon>
+                <span>Approved</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox [checked]="filterForm.get('status')?.value === 'rejected'"
+                         (change)="filterForm.get('status')?.setValue($event.checked ? 'rejected' : 'all')">
+              <div class="filter-option">
+                <mat-icon class="filter-icon">cancel</mat-icon>
+                <span>Rejected</span>
+              </div>
+            </mat-checkbox>
+          </div>
+        </div>
+        
+        <!-- Approval Type -->
+        <div class="filter-group">
+          <h3 class="filter-title">Approval Type</h3>
+          <div class="filter-options">
+            <mat-checkbox>
+              <div class="filter-option">
+                <mat-icon class="filter-icon">verified</mat-icon>
+                <span>Fully</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox>
+              <div class="filter-option">
+                <mat-icon class="filter-icon">shield</mat-icon>
+                <span>Partially</span>
+              </div>
+            </mat-checkbox>
+          </div>
+        </div>
+        
+        <!-- Risk Level -->
+        <div class="filter-group">
+          <h3 class="filter-title">Risk Level</h3>
+          <div class="filter-options">
+            <mat-checkbox>
+              <div class="filter-option">
+                <span class="risk-dot low"></span>
+                <span>Low</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox>
+              <div class="filter-option">
+                <span class="risk-dot medium"></span>
+                <span>Medium</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox>
+              <div class="filter-option">
+                <span class="risk-dot high"></span>
+                <span>High</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox>
+              <div class="filter-option">
+                <span class="risk-dot critical"></span>
+                <span>Critical</span>
+              </div>
+            </mat-checkbox>
+          </div>
+        </div>
+        
+        <!-- Type and Sort -->
+        <div class="filter-group">
+          <h3 class="filter-title">Type</h3>
+          <div class="filter-options">
+            <mat-checkbox>
+              <div class="filter-option">
+                <mat-icon class="filter-icon">business</mat-icon>
+                <span>Vendor</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox>
+              <div class="filter-option">
+                <mat-icon class="filter-icon">people</mat-icon>
+                <span>Internal</span>
+              </div>
+            </mat-checkbox>
+            
+            <mat-checkbox>
+              <div class="filter-option">
+                <mat-icon class="filter-icon">public</mat-icon>
+                <span>External</span>
+              </div>
+            </mat-checkbox>
+          </div>
+          
+          <h3 class="filter-title mt-4">Sort</h3>
+          <div class="sort-controls">
+            <mat-form-field appearance="outline">
+              <mat-select [formControl]="filterForm.get('sortBy')">
+                <mat-option value="date">Date</mat-option>
+                <mat-option value="score">Score</mat-option>
+                <mat-option value="company">Company</mat-option>
+                <mat-option value="status">Status</mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <button mat-stroked-button (click)="filterForm.get('sortOrder')?.setValue(
+                     filterForm.get('sortOrder')?.value === 'asc' ? 'desc' : 'asc')">
+              <mat-icon>{{ filterForm.get('sortOrder')?.value === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
+
+  <!-- Main Content -->
+  <div class="review-content">
+    <!-- Submissions List -->
+    <div class="submissions-list">
+      <app-submissions-list
+        [submissions]="filteredSubmissions"
+        [selectedSubmission]="selectedSubmission"
+        (selectSubmission)="selectSubmission($event)">
+      </app-submissions-list>
+    </div>
+
+    <!-- Submission Details -->
+    <div class="submission-details">
+      <mat-card *ngIf="selectedSubmission; else noSubmissionSelected" class="details-card">
+        <mat-card-header>
+          <mat-card-title>Review Submission</mat-card-title>
+          <div class="header-actions">
+            <button mat-stroked-button>
+              <mat-icon>download</mat-icon>
+              <span class="action-label">Export</span>
+            </button>
+            <button mat-stroked-button>
+              <mat-icon>description</mat-icon>
+              <span class="action-label">Print</span>
+            </button>
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content class="details-content">
+          <app-submission-details
+            [submission]="selectedSubmission"
+            [form]="currentForm">
+          </app-submission-details>
+          
+          <app-submission-actions
+            [submission]="selectedSubmission"
+            [form]="currentForm"
+            (updateSubmission)="updateSubmission($event.id, $event.updates)">
+          </app-submission-actions>
+        </mat-card-content>
+      </mat-card>
+      
+      <ng-template #noSubmissionSelected>
+        <mat-card class="empty-details">
+          <mat-card-content>
+            <mat-icon>description</mat-icon>
+            <p>Select a submission to review</p>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
+    </div>
+  </div>
+</div>

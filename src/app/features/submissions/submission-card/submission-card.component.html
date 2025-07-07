@@ -1,0 +1,67 @@
+<mat-card class="submission-card" 
+          [class.selected]="isSelected"
+          (click)="onClick()">
+  <mat-card-content class="card-content">
+    <!-- Header with submitter info and status -->
+    <div class="card-header">
+      <div class="submitter-info">
+        <mat-icon *ngIf="submission.submissionType === 'vendor'">business</mat-icon>
+        <mat-icon *ngIf="submission.submissionType === 'external'">public</mat-icon>
+        <mat-icon *ngIf="submission.submissionType === 'internal'">person</mat-icon>
+        
+        <div class="submitter-details">
+          <span class="primary-text">{{ getSubmitterDisplay(submission).primary }}</span>
+          <span class="secondary-text">{{ getSubmitterDisplay(submission).secondary }}</span>
+        </div>
+      </div>
+      
+      <div class="status-indicator">
+        <mat-icon [ngClass]="getStatusColor(submission.status, calculateCompletionPercentage(submission))">
+          {{ submission.status === 'approved' ? 'check_circle' : 
+             submission.status === 'rejected' ? 'cancel' : 
+             submission.status === 'under_review' ? 'schedule' : 
+             'error' }}
+        </mat-icon>
+      </div>
+    </div>
+    
+    <!-- Progress and status information -->
+    <div class="card-details">
+      <!-- Completion progress -->
+      <div class="progress-section">
+        <div class="progress-header">
+          <span class="progress-label">Progress</span>
+          <span class="progress-value">{{ calculateCompletionPercentage(submission) }}%</span>
+        </div>
+        <mat-progress-bar [value]="calculateCompletionPercentage(submission)"></mat-progress-bar>
+      </div>
+      
+      <!-- Status badges -->
+      <div class="badges-section">
+        <span class="status-badge completion">{{ getCompletionStatus(submission) }}</span>
+        <span class="status-badge" [ngClass]="getStatusColor(submission.status, calculateCompletionPercentage(submission))">
+          {{ submission.status.replace('_', ' ') }}
+        </span>
+      </div>
+      
+      <!-- Score and type -->
+      <div class="meta-section">
+        <span *ngIf="submission.score" class="meta-badge score">
+          {{ submission.score.total }}/{{ submission.score.maxTotal }}
+        </span>
+        
+        <span class="meta-badge type">
+          {{ submission.submissionType }}
+        </span>
+      </div>
+      
+      <!-- Date and time -->
+      <div class="date-section">
+        <span class="date-text">{{ submission.submittedAt | date }}</span>
+        <span *ngIf="submission.timeSpent" class="time-text">
+          {{ submission.timeSpent }}min
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

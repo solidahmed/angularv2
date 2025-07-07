@@ -1,0 +1,69 @@
+@@ .. @@
+-
+-.filter-container {
+-  width: 100%;
+-}
+-
+-.filter-button {
+-  width: 100%;
+-  min-height: 40px;
+-  padding: 8px 12px;
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  border: 1px solid rgba(0, 0, 0, 0.12);
+-  border-radius: 4px;
+-  background-color: white;
+-  text-align: left;
+-}
+-
+-.filter-content {
+-  display: flex;
+-  flex-direction: column;
+-  flex: 1;
+-  min-width: 0;
+-  overflow: hidden;
+-}
+-
+-.placeholder {
+-  color: rgba(0, 0, 0, 0.54);
+-}
+-
+-.selected-text {
+-  font-size: 14px;
+-  white-space: nowrap;
+-  overflow: hidden;
+-  text-overflow: ellipsis;
+-}
+-
+-.selected-chips {
+-  display: flex;
+-  flex-wrap: wrap;
+-  gap: 4px;
+-  margin-top: 4px;
+-}
+-
+-.menu-content {
+-  padding: 8px;
+-  max-height: 240px;
+-  overflow-y: auto;
+-  min-width: 200px;
+-}
+-
+-.option-item {
+-  padding: 8px;
+-  display: flex;
+-  align-items: center;
+-}
+-
+-.count {
+-  margin-left: 4px;
+-  color: rgba(0, 0, 0, 0.54);
+-  font-size: 12px;
+-}
+-
+-::ng-deep .filter-menu {
+-  max-height: 300px;
+-}
++/* This component has been moved to the forms feature module */
++/* Import from @app/features/forms/components/multi-select-filter/multi-select-filter.component */
